@@ -1,5 +1,5 @@
 <!DOCTYPE html><html><head>
-      <title>index</title>
+      <title>signup</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
@@ -24,14 +24,36 @@
     
       <div class="crossnote markdown-preview  ">
       
-<h1 id="technical-documentation">Technical documentation </h1>
-<h2 id="global-architectureglobal-architecturehtml"><a href="./global-architecture.html">Global architecture</a> </h2>
-<h2 id="flows-and-tests">Flows and tests </h2>
+<h1 id="sign-up">Sign up </h1>
+<h2 id="overview">Overview </h2>
+<p class="plantuml"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentstyletype="text/css" data-diagram-type="ACTIVITY" height="561px" preserveAspectRatio="none" style="width:253px;height:561px;background:#FFFFFF;" version="1.1" viewBox="0 0 253 561" width="253px" zoomAndPan="magnify"><defs></defs><g><ellipse cx="125.5694" cy="20" fill="#222222" rx="10" ry="10" style="stroke:#222222;stroke-width:1;"></ellipse><rect fill="#F1F1F1" height="36.3441" rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;" width="96.2005" x="77.4692" y="50"></rect><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="73.0805" x="90.5892" y="72.8281">📝 Signup form</text><rect fill="#F1F1F1" height="36.3441" rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;" width="129.5128" x="60.813" y="106.3441"></rect><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="106.3927" x="73.9331" y="129.1722">📝 Terms and privacy</text><rect fill="#F1F1F1" height="85.3765" rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;" width="179.1389" x="36" y="255.8747"></rect><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="73.0805" x="49.12" y="278.7028">📝 Signup form</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="3.12" x="46" y="295.0469">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="131.5746" x="46" y="311.391">(⚠️ Email already taken)</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="159.1389" x="46" y="327.7351">(⚠️ Username already taken)</text><polygon fill="#F1F1F1" points="76.8068,162.6882,174.3321,162.6882,186.3321,192.652,174.3321,222.6158,76.8068,222.6158,64.8068,192.652,76.8068,162.6882" style="stroke:#181818;stroke-width:0.5;"></polygon><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="17.0829" x="129.5694" y="234.3747">yes</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="2.86" x="76.8068" y="174.4471">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="97.5253" x="76.8068" y="189.429">email or username</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="70.1795" x="85.3867" y="204.4109">already taken</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="2.86" x="76.8068" y="219.3928">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="13.4529" x="51.3539" y="189.429">no</text><rect fill="#F1F1F1" height="52.6882" rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;" width="111.1766" x="69.9811" y="383.2511"></rect><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="87.8583" x="83.1011" y="406.0792">⚙️ Save account</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="88.0566" x="83.1011" y="422.4234">and acceptance</text><rect fill="#F1F1F1" height="52.6882" rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;" width="109.1127" x="71.0131" y="455.9394"></rect><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="85.9926" x="84.1331" y="478.7675">🔀 Redirect to the</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="74.9886" x="90.3732" y="495.1116">login process</text><ellipse cx="125.5694" cy="539.6276" fill="transparent" rx="11" ry="11" style="stroke:#222222;stroke-width:1;"></ellipse><ellipse cx="125.5694" cy="539.6276" fill="#222222" rx="6" ry="6" style="stroke:#222222;stroke-width:1;"></ellipse><line style="stroke:#181818;stroke-width:1;" x1="125.5694" x2="125.5694" y1="30" y2="50"></line><polygon fill="#181818" points="121.5694,40,125.5694,50,129.5694,40,125.5694,44" style="stroke:#181818;stroke-width:1;"></polygon><line style="stroke:#181818;stroke-width:1;" x1="125.5694" x2="125.5694" y1="86.3441" y2="106.3441"></line><polygon fill="#181818" points="121.5694,96.3441,125.5694,106.3441,129.5694,96.3441,125.5694,100.3441" style="stroke:#181818;stroke-width:1;"></polygon><line style="stroke:#181818;stroke-width:1;" x1="125.5694" x2="125.5694" y1="222.6158" y2="255.8747"></line><polygon fill="#181818" points="121.5694,245.8747,125.5694,255.8747,129.5694,245.8747,125.5694,249.8747" style="stroke:#181818;stroke-width:1;"></polygon><line style="stroke:#181818;stroke-width:1;" x1="125.5694" x2="125.5694" y1="341.2511" y2="351.2511"></line><line style="stroke:#181818;stroke-width:1;" x1="125.5694" x2="227.1389" y1="351.2511" y2="351.2511"></line><polygon fill="#181818" points="223.1389,280.0901,227.1389,270.0901,231.1389,280.0901,227.1389,276.0901" style="stroke:#181818;stroke-width:1;"></polygon><line style="stroke:#181818;stroke-width:1;" x1="227.1389" x2="227.1389" y1="192.652" y2="351.2511"></line><line style="stroke:#181818;stroke-width:1;" x1="227.1389" x2="186.3321" y1="192.652" y2="192.652"></line><polygon fill="#181818" points="196.3321,188.652,186.3321,192.652,196.3321,196.652,192.3321,192.652" style="stroke:#181818;stroke-width:1;"></polygon><line style="stroke:#181818;stroke-width:1;" x1="64.8068" x2="24" y1="192.652" y2="192.652"></line><polygon fill="#181818" points="20,266.0901,24,276.0901,28,266.0901,24,270.0901" style="stroke:#181818;stroke-width:1;"></polygon><line style="stroke:#181818;stroke-width:1;" x1="24" x2="24" y1="192.652" y2="363.2511"></line><line style="stroke:#181818;stroke-width:1;" x1="24" x2="125.5694" y1="363.2511" y2="363.2511"></line><line style="stroke:#181818;stroke-width:1;" x1="125.5694" x2="125.5694" y1="363.2511" y2="383.2511"></line><polygon fill="#181818" points="121.5694,373.2511,125.5694,383.2511,129.5694,373.2511,125.5694,377.2511" style="stroke:#181818;stroke-width:1;"></polygon><line style="stroke:#181818;stroke-width:1;" x1="125.5694" x2="125.5694" y1="142.6882" y2="162.6882"></line><polygon fill="#181818" points="121.5694,152.6882,125.5694,162.6882,129.5694,152.6882,125.5694,156.6882" style="stroke:#181818;stroke-width:1;"></polygon><line style="stroke:#181818;stroke-width:1;" x1="125.5694" x2="125.5694" y1="435.9394" y2="455.9394"></line><polygon fill="#181818" points="121.5694,445.9394,125.5694,455.9394,129.5694,445.9394,125.5694,449.9394" style="stroke:#181818;stroke-width:1;"></polygon><line style="stroke:#181818;stroke-width:1;" x1="125.5694" x2="125.5694" y1="508.6276" y2="528.6276"></line><polygon fill="#181818" points="121.5694,518.6276,125.5694,528.6276,129.5694,518.6276,125.5694,522.6276" style="stroke:#181818;stroke-width:1;"></polygon><!--SRC=[ROynReD044LxJl5Bk4AeSm5ZTpIZPG8hmopQ7HpHvGOfd2P8bdECd8SBs4Vm4Xn5YLBEpFlp_mzANfC7NC_74mfRoz3ZoVak_zvjsNS191LwRmzanZnvRcpBI4lXZcmBvp44za8TbmA0MizKZL3QivIImGQa8uVi7vio0kayVLm-N_7uzUsNElkvxkuMVu0yOQdkWSGj5lFqll057I9hZ1j4OwobG9ouLnB3Qxkt5souifwDGXsqMVEthhOIsph38UH9KDVV0000]--></g></svg></p><hr>
+<h2 id="test-plan">Test Plan </h2>
+<ol>
+<li><strong>Create a new account</strong> 🟢</li>
+</ol>
 <ul>
-<li><a href="./flows/login.html">Sign up</a></li>
-<li><a href="./flows/signup.html">Login</a></li>
+<li>Terms and conditions must be read and accepted</li>
+<li>Account and acceptance are saved in the database</li>
+<li>Redirection occurs</li>
+<li>Login is possible</li>
 </ul>
-<h2 id="building-units-from-notesbuilding-units-from-noteshtml"><a href="./building-units-from-notes.html">Building units from notes</a> </h2>
+<ol start="2">
+<li><strong>Handle conflicts with existing accounts</strong> 🟢</li>
+</ol>
+<ul>
+<li>A specific message appears (email or username already taken)</li>
+<li>Terms and conditions do not need to be accepted again</li>
+<li>Corrections can be made</li>
+<li>Account and acceptance are saved in the database</li>
+<li>Redirection occurs</li>
+<li>Login is possible</li>
+</ul>
+<ol start="3">
+<li><strong>No connection</strong> 🟢</li>
+</ol>
+<ul>
+<li>The connection issue is reported</li>
+</ul>
 
       </div>
       
