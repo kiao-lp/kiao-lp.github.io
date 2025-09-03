@@ -25,13 +25,11 @@ flowchart TB
 
     subgraph Account["Account"]
         U1["Register"]
-        U2["Edit account"]
         U3["Authenticate"]
     end
 
     subgraph Learning["Learning"]
         E1["Learn"]
-        E2["Customize training per unit"]
     end
 
     %% Links between zones
@@ -44,6 +42,12 @@ flowchart TB
 
 ## 2. Application
 
+### Role of each zone / group
+
+- **Exchange**: interface with external systems
+- **Operation**: manage shared business logic
+- **Reference**: standardize and centralize
+
 ### Overview
 
 ```plantuml
@@ -52,58 +56,57 @@ skinparam componentStyle rectangle
 skinparam defaultTextAlignment center
 left to right direction
 
-package "Exchange" {
-    node "Gateway (Nginx)" as GW
-    component "<< frontend >>\nAccount" as MFCompte
-    component "<< frontend >>\nNote" as MFNote
-    component "<< frontend >>\nCatalog" as MFCatalog
-    component "<< android >>\nLearning" as LearningAA
+actor User
 
-    MFCompte --> GW
-    MFNote --> GW
-    MFCatalog --> GW
-    LearningAA --> GW
+package "🌐 Operation" {
+    node "Gateway\n(Nginx)" as GW
+    
+    rectangle "Registrar" <<service>> as MSRegistrar
+    rectangle "Auth" <<service>> as MSAuth
+    rectangle "Catalog" <<service>> as MSCatalog
+
+    queue "MOM\n(Kafka)" as MOM
+
+    MSRegistrar --> MOM
+    MSCatalog --> MOM
 }
 
-package "Operation" {
+package "🌐 Exchange" {
+    component "Operation components" as OperationComponents <<library>>
+    component "Unit builder" <<service>> as Publication
+    component "Go" <<android/web>> as KiaoGO
+    component "Notes" <<service/web>> as KiaoNotes
 
-    rectangle "Account" as ZCompte
-    rectangle "Note" as ZNote
-    rectangle "Catalog" as ZCatalog
-
-    component "Publication" as Publication
-
-    queue "MOM (Kafka)" as MOM
-
-    ZCompte --> MOM
-    ZNote --> MOM
-    ZCatalog --> MOM
-    Publication --> MOM
+    KiaoNotes --> Publication : REST
+    Publication --> GW : REST
+    KiaoGO o-- OperationComponents
+    OperationComponents --> GW : REST
+    KiaoGO --> GW : REST
+    KiaoNotes --> GW : REST
 }
 
-package "Reference" {
+User --> KiaoNotes
+User --> KiaoGO
+
+package "🌐 Reference" {
     rectangle "Messages"
-    rectangle "Shared Data"
-    rectangle "MLScript"
 
-    ZCompte --> Messages
-    ZNote --> Messages
-    ZCatalog --> Messages
+    MSRegistrar --> Messages
+    MSCatalog --> Messages
 }
 
-package "Data Repository" {
+package "🌐 Data Repository" {
     database "Account DB"
-    database "Note DB"
     database "Unit DB"
 
-    ZCompte --> "Account DB"
-    ZNote --> "Note DB"
-    ZCatalog --> "Unit DB"
+    MSAuth --> "Account DB" : R.O.
+    MSRegistrar --> "Account DB"
+    MSCatalog --> "Unit DB"
 }
 
-GW --> ZCompte
-GW --> ZNote
-GW --> ZCatalog
+GW --> MSAuth
+GW --> MSRegistrar
+GW --> MSCatalog
 @enduml
 ```
 
@@ -114,12 +117,14 @@ GW --> ZCatalog
 skinparam componentStyle rectangle
 skinparam defaultTextAlignment center
 
-node "Web Client (browser)" {
-  artifact "Frontend React/TS"
+left to right direction
+
+node "Desktop" {
+  artifact "📦 notes-data-service\n📦 unit-builder-service\n📦 notes-ui" as KiaoNotes
 }
 
-node "Android Client" {
-  artifact "Android App"
+node "KiaoGO" {
+  artifact "📦 KiaoMobile" as KiaoMobile
 }
 
 cloud "Cloud" {
@@ -127,57 +132,45 @@ cloud "Cloud" {
   ' --- Production Server ---
   node "VPS OVH\nkiao-lp.app (Ubuntu 24.10)" {
     
-    node "Nginx (gateway)" {
-      rectangle "reverse proxy"
+    node "🐳 Nginx (gateway)" {
+      rectangle "reverse proxy" as RP
     }
 
     node "Docker Compose" {
-      component "account" <<service>>
-      component "note" <<service>>
-      component "unit" <<service>>
-      component "publication" <<service>>
+      component "🐳 registrar" <<service>> as registrar
+      component "🐳 authentication" <<service>> as auth
+      component "🐳 u n i t" <<service>> as unit
 
-      component "PostgreSQL" {
+      component "🐳 PostgreSQL" {
         database "DB_account"
-        database "DB_note"
         database "DB_catalog"
       }
 
-      queue "Kafka"
+      queue "🐳 K a f k a" as Kafka
     }
   }
 
-  artifact "Google TTS API"
-}
-
-' --- Backup Zone ---
-folder "External Backup" {
-  database "PostgreSQL Backup"
 }
 
 ' --- Network Communications ---
 
-"Frontend React/TS" --> "reverse proxy" : HTTPS
-"Android App" --> "reverse proxy" : HTTPS
+KiaoNotes --> RP : HTTPS
+"KiaoMobile" --> RP : HTTPS
 
-"reverse proxy" --> "account"
-"reverse proxy" --> "note"
-"reverse proxy" --> "unit"
+RP --> "registrar"
+RP --> "auth"
+RP --> "unit"
 
 ' --- Kafka ---
-"note" -- "Kafka"
-"account" -- "Kafka"
+"registrar" -- "Kafka"
 "unit" -- "Kafka"
-"publication" -- "Kafka"
 
-"publication" --> "Google TTS API"
+
 
 ' --- Databases ---
-"account" --> "DB_account"
-"note" --> "DB_note"
+"registrar" --> "DB_account"
+"auth" --> "DB_account" : " (Read Only)"
 "unit" --> "DB_catalog"
-
-PostgreSQL --> "PostgreSQL Backup" : replication/backup
 
 @enduml
 ```
