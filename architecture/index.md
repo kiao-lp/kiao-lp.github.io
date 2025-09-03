@@ -4,7 +4,7 @@
 
 ## Flows and tests
 
-* [Sign up](./flows/login.html)
-* [Login](./flows/signup.html)
+* [Sign up](./flows/signup.html)
+* [Login](./flows/login.html)
 
 ## [Building units from notes](./building-units-from-notes.html)
