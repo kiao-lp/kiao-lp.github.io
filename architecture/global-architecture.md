@@ -61,26 +61,25 @@ actor User
 package "🌐 Operation" {
     node "Gateway\n(Nginx)" as GW
     
-    rectangle "Registrar" <<service>> as MSRegistrar
-    rectangle "Auth" <<service>> as MSAuth
+    rectangle "Keycloak" <<managed>> as MSKeycloak
     rectangle "Catalog" <<service>> as MSCatalog
 
     queue "MOM\n(Kafka)" as MOM
 
-    MSRegistrar --> MOM
-    MSCatalog --> MOM
+    MSKeycloak --> MOM
+    MSCatalog <-- MOM
 }
 
 package "🌐 Exchange" {
-    component "Operation components" as OperationComponents <<library>>
+    component "Catalog components" as CatalogComponents <<library>>
     component "Unit builder" <<service>> as Publication
     component "Go" <<android/web>> as KiaoGO
     component "Notes" <<service/web>> as KiaoNotes
 
     KiaoNotes --> Publication : REST
     Publication --> GW : REST
-    KiaoGO o-- OperationComponents
-    OperationComponents --> GW : REST
+    KiaoGO o-- CatalogComponents
+    CatalogComponents --> GW : REST
     KiaoGO --> GW : REST
     KiaoNotes --> GW : REST
 }
@@ -91,21 +90,19 @@ User --> KiaoGO
 package "🌐 Reference" {
     rectangle "Messages"
 
-    MSRegistrar --> Messages
+    MSKeycloak --> Messages
     MSCatalog --> Messages
 }
 
 package "🌐 Data Repository" {
-    database "Account DB"
+    database "Keycloak DB"
     database "Unit DB"
 
-    MSAuth --> "Account DB" : R.O.
-    MSRegistrar --> "Account DB"
+    MSKeycloak --> "Keycloak DB"
     MSCatalog --> "Unit DB"
 }
 
-GW --> MSAuth
-GW --> MSRegistrar
+GW --> MSKeycloak
 GW --> MSCatalog
 @enduml
 ```
@@ -120,7 +117,7 @@ skinparam defaultTextAlignment center
 left to right direction
 
 node "Desktop" {
-  artifact "📦 notes-data-service\n📦 unit-builder-service\n📦 notes-ui" as KiaoNotes
+  artifact "📦 notes-data-service\n📦 catalog-builder-service\n📦 notes-ui" as KiaoNotes
 }
 
 node "KiaoGO" {
@@ -137,12 +134,11 @@ cloud "Cloud" {
     }
 
     node "Docker Compose" {
-      component "🐳 registrar" <<service>> as registrar
-      component "🐳 authentication" <<service>> as auth
-      component "🐳 u n i t" <<service>> as unit
+      component "🐳 k e y c l o a k" <<service>> as registrar
+      component "🐳 c a t a l o g" <<service>> as catalog
 
       component "🐳 PostgreSQL" {
-        database "DB_account"
+        database "DB_keycloak"
         database "DB_catalog"
       }
 
@@ -158,19 +154,17 @@ KiaoNotes --> RP : HTTPS
 "KiaoMobile" --> RP : HTTPS
 
 RP --> "registrar"
-RP --> "auth"
-RP --> "unit"
+RP --> "catalog"
 
 ' --- Kafka ---
 "registrar" -- "Kafka"
-"unit" -- "Kafka"
+"catalog" -- "Kafka"
 
 
 
 ' --- Databases ---
-"registrar" --> "DB_account"
-"auth" --> "DB_account" : " (Read Only)"
-"unit" --> "DB_catalog"
+"registrar" --> "DB_keycloak"
+"catalog" --> "DB_catalog"
 
 @enduml
 ```
@@ -230,7 +224,3 @@ package microservice {
 }
 @enduml
 ```
-
-#### Rules
-
-- **adapters are interchangeable** and activated by configuration. For example, a kafka producter can be replaced by a HTTP request sended without impacting the core.
