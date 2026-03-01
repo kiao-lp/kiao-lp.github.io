@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expression des besoins</title>
+  <style>
+    /* Reset & base */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { font-size: 16px; line-height: 1.6; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      color: #1f2328;
+      background: #fff;
+      margin: 0;
+      padding: 2em;
+      max-width: 980px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Headings */
+    h1, h2, h3, h4, h5, h6 { margin-top: 1.5em; margin-bottom: 0.5em; font-weight: 600; color: #1f2328; }
+    h1 { font-size: 2em; padding-bottom: 0.3em; border-bottom: 1px solid #d1d9e0; }
+    h2 { font-size: 1.5em; padding-bottom: 0.3em; border-bottom: 1px solid #d1d9e0; }
+    h3 { font-size: 1.25em; }
+    h4 { font-size: 1em; }
+
+    /* Links */
+    a { color: #0969da; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Paragraphs & lists */
+    p { margin: 0 0 16px; }
+    ul, ol { padding-left: 2em; margin-bottom: 16px; }
+    li { margin-bottom: 4px; }
+
+    /* Code */
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.85em;
+      background: #f6f8fa;
+      border-radius: 6px;
+      padding: 0.2em 0.4em;
+    }
+    pre {
+      background: #f6f8fa;
+      border-radius: 6px;
+      padding: 16px;
+      overflow: auto;
+      line-height: 1.45;
+      margin-bottom: 16px;
+    }
+    pre code { background: none; padding: 0; font-size: 0.85em; }
+
+    /* Blockquotes */
+    blockquote {
+      margin: 0 0 16px;
+      padding: 0 1em;
+      color: #656d76;
+      border-left: 4px solid #d1d9e0;
+    }
+
+    /* Tables */
+    table { border-collapse: collapse; width: 100%; margin-bottom: 16px; }
+    th, td { border: 1px solid #d1d9e0; padding: 6px 13px; text-align: left; }
+    th { background: #f6f8fa; font-weight: 600; }
+    tr:nth-child(even) { background: #f6f8fa; }
+
+    /* Horizontal rules */
+    hr { border: none; border-top: 1px solid #d1d9e0; margin: 24px 0; }
+
+    /* Images & SVG */
+    img, svg { max-width: 100%; height: auto; }
+
+    /* Diagram containers */
+    .plantuml, .mermaid-diagram { text-align: center; margin: 16px 0; }
+
+    /* Bold & emphasis */
+    strong { font-weight: 600; color: #1f2328; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body { padding: 1em; font-size: 14px; }
+    }
+
+    @media print {
+      body { max-width: none; padding: 0; }
+      h1, h2, h3, h4, h5, h6 { page-break-after: avoid; }
+      pre { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<h1 id="expression-des-besoins">Expression des besoins</h1>
+<h2 id="but-et-contexte">But et contexte</h2>
+<p>Le but du projet est de doter <strong>KIAO</strong> (Knowledge Information And Operations) d’une infrastructure de distribution et d’interraction entre utilisateurs.</p>
+<p>KIAO contient :</p>
+<ul>
+<li>un <strong>logiciel de prise de notes</strong> (dans un format inspiré de markdown)</li>
+<li>une <strong>application android</strong> interprétant ces notes sous formes d’exercices.</li>
+</ul>
+<p>Ces composants existent déjà, mais doivent être remaniés. (Ce n’est pas de leur développement qu’il est question ici, mais de celui de l’infrastructure qui permet de les rendre utilisables par la communauté.)</p>
+<p>Pour que cela fonctionne les notes contiennent :</p>
+<ul>
+<li>des indices (questions ou débuts de phrase)</li>
+<li>des réponses attendues</li>
+</ul>
+<p><strong>Exemple</strong> :</p>
+<pre><code>?Quels sont les buts de l&#39;expression des besoins ?
+- délimiter le système
+- définir les fonctionnalités du point de vue utilisateur</code></pre>
+<p>Le texte ci-dessous génère (Text To Speech) le discours suivant :</p>
+<p><em>Complétez : Quels sont les buts de l’expression des besoins ?</em></p>
+<p><em>[temps d’attente]</em></p>
+<p><em>délimiter le système</em></p>
+<p><em>[temps d’attente]</em></p>
+<p><em>définir les fonctionnalités du point de vue utilisateur</em></p>
+<p>A tout moment l’utilisateur peut enregistrer un échec, ou indiquer que la question est trop facile (s’il n’indique rien il s’agit d’une réussite), et l’ensemble des résultats successifs déterminera le moment de la prochaine tentative (apprentissage distribué).</p>
+<p>En cas d’échec, le système dira :</p>
+<p><em>Répétez : Quels sont les buts de l’expression des besoins ?</em> - <em>délimiter le système</em> - <em>définir les fonctionnalités du point de vue utilisateur</em></p>
+<p><em>[temps d’attente]</em></p>
+<p>Dans tous les cas, l’exercice suivant sera alors lancé.</p>
+<p>En réalité, il existe plusieurs exercices sur le même principe : vocabulaire dans plusieurs langues, apprentissage de phrases importantes, exercices écrits (de mathématiques, par exemple). Les exercices sont toujours définis dans le texte des notes.</p>
+<p>Chaque <a href="https://github.com/ezwn/kiao-pub/blob/main/infra/maven/kiao-knowledge-assessment-lib/src/main/java/kiao/knowledge/assessment/ExerciseType.java">type d’exercices</a> a ses propres paramètres de planification (période réfractaire minimale, exposant d’apprentissage, exposant d’oubli, etc.) qui influencent le <a href="https://github.com/ezwn/kiao-pub/blob/563012c70474bf51d323922e802d69e100cee968/infra/maven/kiao-knowledge-assessment-lib/src/main/java/kiao/knowledge/assessment/AttemptLog.java#L46">calcul de la durée de consolidation</a> pendant laquel l’exercice est supposé stable en mémoire.</p>
+<p>Note : le contenu textuel des notes/unités, sur lequel est fondé les exercices n’est analysé que :</p>
+<ol type="1">
+<li>dans le cadre du champ de saisi (pure frontend)</li>
+<li>dans l’application déployée sur téléphone mobile</li>
+</ol>
+<p>Cela ne fait donc pas partie de ce projet. Toutefois le code source de l’analyseur est disponible ici :</p>
+<p>https://github.com/ezwn/kiao-pub/tree/main/infra/maven/kiao-mlscript-lib</p>
+<h2 id="acteurs">Acteurs</h2>
+<ul>
+<li>visiteur : acteur non authentifié</li>
+<li>membre</li>
+<li>membre de confiance : peu déclencher des actions coûteuses en ressources</li>
+<li>administrateur</li>
+<li>application mobile : acteur non humain car elle ne fait pas partie des interactions et que sa modélisaiton interne serait beaucoup trop complexe dans le cadre de cet exercice.</li>
+</ul>
+<h2 id="règles-générales">Règles générales</h2>
+<h3 id="validation-des-données">Validation des données</h3>
+<p>Sauf mention contraire :</p>
+<ul>
+<li><p>Toutes les zones de saisie (formulaires) valident les entrées utilisateur en temps réel et le bouton qui finalise la saisie (bouton de soumission) n’est actif que lorsque les informations sont valides. Des messages mis à jour au fur et à mesure de la saisie indiquent à l’utilisateur quels sont les problèmes d’intégrité.</p></li>
+<li><p>Lorsque la finalisation a été demandée, le système vérifie, en interne, une seconde fois la validité des informations saisies. En cas d’échec, un message générique est affiché à l’utilisateur et le cas d’utilisation est interrompu.</p></li>
+</ul>
+<h2 id="cas-dutilisation">Cas d’utilisation</h2>
+<h3 id="groupe-comptes">Groupe “Comptes”</h3>
+<div class="plantuml-diagram">
+<?plantuml 1.2026.1?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="DESCRIPTION" height="464px" preserveAspectRatio="none" style="width:353px;height:464px;background:#FFFFFF;" version="1.1" viewBox="0 0 353 464" width="353px" zoomAndPan="magnify">
+<defs/><g><!--cluster Gestion des comptes--><g class="cluster" data-qualified-name="Gestion des comptes" data-source-line="6" id="ent0004"><rect fill="none" height="451" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1;" width="240.15" x="107.59" y="7"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="165.04" x="145.145" y="21.9951">Gestion des comptes</text></g><!--entity UC1--><g class="entity" data-qualified-name="Gestion des comptes.UC1" data-source-line="7" id="ent0005"><ellipse cx="227.6607" cy="59.0041" fill="#F1F1F1" rx="74.7207" ry="17.3441" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="118.0498" x="168.6358" y="63.6526">Créer un compte</text></g><!--entity UC2--><g class="entity" data-qualified-name="Gestion des comptes.UC2" data-source-line="8" id="ent0006"><ellipse cx="227.6586" cy="426.9957" fill="#F1F1F1" rx="65.4286" ry="15.4857" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="94.6025" x="180.3574" y="431.6442">S’authentifier</text></g><!--entity UC3--><g class="entity" data-qualified-name="Gestion des comptes.UC3" data-source-line="9" id="ent0007"><ellipse cx="227.6601" cy="357" fill="#F1F1F1" rx="85.3501" ry="19.47" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="143.1309" x="156.0947" y="361.6485">Modifier son compte</text></g><!--entity UC4--><g class="entity" data-qualified-name="Gestion des comptes.UC4" data-source-line="10" id="ent0008"><ellipse cx="227.657" cy="281.9994" fill="#F1F1F1" rx="92.647" ry="20.9294" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="159.708" x="147.803" y="286.6478">Supprimer son compte</text></g><!--entity UC5--><g class="entity" data-qualified-name="Gestion des comptes.UC5" data-source-line="11" id="ent0009"><ellipse cx="227.6555" cy="202.9951" fill="#F1F1F1" rx="104.0755" ry="23.2151" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="185.001" x="135.1551" y="207.6435">Modifier son mot de passe</text></g><!--entity UC6--><g class="entity" data-qualified-name="Gestion des comptes.UC6" data-source-line="12" id="ent0010"><ellipse cx="227.6571" cy="127.9994" fill="#F1F1F1" rx="71.2971" ry="16.6594" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109.6279" x="172.8432" y="132.6479">Se déconnecter</text></g><!--entity Visiteur--><g class="entity" data-qualified-name="Visiteur" data-source-line="3" id="ent0002"><ellipse cx="34.7909" cy="29.35" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M34.7909,37.35 L34.7909,64.35 M21.7909,45.35 L47.7909,45.35 M34.7909,64.35 L21.7909,79.35 M34.7909,64.35 L47.7909,79.35" fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="53.3818" x="8.1" y="93.8451">Visiteur</text></g><!--entity Membre--><g class="entity" data-qualified-name="Membre" data-source-line="4" id="ent0003"><ellipse cx="34.793" cy="252.35" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M34.793,260.35 L34.793,287.35 M21.793,268.35 L47.793,268.35 M34.793,287.35 L21.793,302.35 M34.793,287.35 L47.793,302.35" fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57.5859" x="6" y="316.8451">Membre</text></g><!--link Visiteur to UC1--><g class="link" data-entity-1="ent0002" data-entity-2="ent0005" data-link-type="dependency" data-source-line="15" id="lnk11"><path d="M61.93,59 C85.31,59 114.73,59 146.74,59" fill="none" id="Visiteur-to-UC1" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="152.74,59,143.74,55,147.74,59,143.74,63,152.74,59" style="stroke:#181818;stroke-width:1;"/></g><!--link Membre to UC2--><g class="link" data-entity-1="ent0003" data-entity-2="ent0006" data-link-type="dependency" data-source-line="16" id="lnk12"><path d="M48.78,320.56 C58.93,345.04 75.42,375.5 99.59,394 C118.68,408.62 137.7368,415.6218 160.4568,420.1718" fill="none" id="Membre-to-UC2" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="166.34,421.35,158.3007,415.6606,161.4373,420.3682,156.7298,423.5048,166.34,421.35" style="stroke:#181818;stroke-width:1;"/></g><!--link Membre to UC3--><g class="link" data-entity-1="ent0003" data-entity-2="ent0007" data-link-type="dependency" data-source-line="17" id="lnk13"><path d="M63.87,300.82 C74.71,307.52 87.41,314.7 99.59,320 C120.97,329.3 139.595,335.4482 161.255,341.4082" fill="none" id="Membre-to-UC3" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="167.04,343,159.4237,336.7556,162.2192,341.6735,157.3013,344.469,167.04,343" style="stroke:#181818;stroke-width:1;"/></g><!--link Membre to UC4--><g class="link" data-entity-1="ent0003" data-entity-2="ent0008" data-link-type="dependency" data-source-line="18" id="lnk14"><path d="M63.96,282 C82.83,282 102.84,282 128.54,282" fill="none" id="Membre-to-UC4" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="134.54,282,125.54,278,129.54,282,125.54,286,134.54,282" style="stroke:#181818;stroke-width:1;"/></g><!--link Membre to UC5--><g class="link" data-entity-1="ent0003" data-entity-2="ent0009" data-link-type="dependency" data-source-line="19" id="lnk15"><path d="M63.95,263.37 C74.8,256.69 87.49,249.47 99.59,244 C119.02,235.21 135.18,229.2616 155.23,222.9116" fill="none" id="Membre-to-UC5" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="160.95,221.1,151.1623,220.004,156.1833,222.6096,153.5777,227.6307,160.95,221.1" style="stroke:#181818;stroke-width:1;"/></g><!--link Membre to UC6--><g class="link" data-entity-1="ent0003" data-entity-2="ent0010" data-link-type="dependency" data-source-line="20" id="lnk16"><path d="M47.19,243.36 C56.96,216.76 73.64,182.63 99.59,162 C117.28,147.93 134.4462,140.9662 156.0162,136.1162" fill="none" id="Membre-to-UC6" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="161.87,134.8,152.2117,132.8718,156.9918,135.8969,153.9667,140.6769,161.87,134.8" style="stroke:#181818;stroke-width:1;"/></g><?plantuml-src VP0z3i8m34RtdCBgmjI1dtPawS34X60FgQ6HQ1BPpeGu4EVWOhIbHKg5oFQKvq_sTyEBW7WWUsq4Qajen7gdb3RY2KwMhM2a4VVOdWcLwYtjhZU4R8VS3q2D3CQtGP0pk2leNcGqcZkdejSJ2Q8RZGmqmx5QfjPXeQCqwCHUBDBeh59dx-lX5zZFmjQpi1W2sVQNkVaJsVgk18IWcIUzc0KZrA-dySvr7NpNBDL3gQaioFFjSDwdhX5NAQvJtAHOf5Y-0G00?></g>
+</svg>
+</div>
+<h4 id="créer-un-compte">Créer un compte</h4>
+<h5 id="résumé">Résumé</h5>
+<p>N’importe quel visiteur non authentifié peut créer un compte.</p>
+<h5 id="acteur">Acteur</h5>
+<ul>
+<li>Visiteur</li>
+</ul>
+<h5 id="pré-conditions">Pré-conditions</h5>
+<ul>
+<li>Ne pas être authentifié.</li>
+</ul>
+<h5 id="contraintes-de-déploiement">Contraintes de déploiement</h5>
+<ul>
+<li>Disponible par internet.</li>
+</ul>
+<h5 id="scénario-nominal">Scénario nominal</h5>
+<ol type="1">
+<li>le visiteur active l’option “inscription” sur l’une des pages.</li>
+<li>le système présente un formulaire (langue principale, email, nom public et mot de passe avec confirmation).</li>
+<li>le visiteur renseigne le formulaire (validation/activation de soumission en temps réel).</li>
+<li>le système vérifie l’unicité du nom public et crée un compte inactif de type “membre”.</li>
+<li>le système envoie un message de création pour la note racine de l’utilisateur au système “notes” qui crée la note avec le texte “Bienvenue chez vous !” dans la langue du formulaire.</li>
+<li>le système envoie un lien avec code d’activation à l’adresse email.</li>
+<li>le visiteur utilise le lien.</li>
+<li>le système active le compte.</li>
+</ol>
+<h5 id="scénario-derreur-nom-public-déjà-utilisé">Scénario d’erreur : nom public déjà utilisé</h5>
+<p>Si, en 4, le nom public est déjà utilisé, le visiteur est redirigé vers le formulaire (3.) et un message lui indique que le nom d’utilisateur est utilisé par un autre membre.</p>
+<h5 id="post-conditions">Post-conditions</h5>
+<p>Le visiteur dispose d’un compte “membre” actif.</p>
+<h5 id="contraintes-non-fonctionnelles">Contraintes non fonctionnelles</h5>
+<p>Aucune.</p>
+<h4 id="modifier-son-mot-de-passe">Modifier son mot de passe</h4>
+<h5 id="résumé-1">Résumé</h5>
+<p>Il s’agit pour un membre ne pouvant plus se connecter de modifier son mot de passe.</p>
+<h5 id="acteur-1">Acteur</h5>
+<ul>
+<li>Visiteur</li>
+</ul>
+<h5 id="pré-conditions-1">Pré-conditions</h5>
+<ul>
+<li>Posséder un compte.</li>
+</ul>
+<h5 id="contraintes-de-déploiement-1">Contraintes de déploiement</h5>
+<ul>
+<li>Disponible par internet.</li>
+</ul>
+<h5 id="scénario-nominal-1">Scénario nominal</h5>
+<ol type="1">
+<li>le visiteur active l’option “modifier mon mot de passe” sur le formulaire de login.</li>
+<li>le système demande l’email.</li>
+<li>le visiteur saisi l’email et valide (impossible de valider si l’email est mal structuré).</li>
+<li>le système envoi un email avec un lien temporaire et l’indique au visiteur.</li>
+<li>le visiteur suit le lien.</li>
+<li>le système affiche un formulaire (mot de passe et confirmation).</li>
+<li>le visiteur renseigne le mot de passe (et confirme) et valide.</li>
+<li>le système met à jour le mot de passe et redirige vers la page de login.</li>
+</ol>
+<h5 id="scénario-derreur-email-inconnu">Scénario d’erreur : email inconnu</h5>
+<p>Si, en 4, l’adresse email n’est pas connue, aucun email n’est envoyé. Cependant le problème n’est pas rapporté à l’utilisateur.</p>
+<h5 id="post-conditions-1">Post-conditions</h5>
+<p>Le mot de passe associé au compte est mis à jour.</p>
+<h5 id="contraintes-non-fonctionnelles-1">Contraintes non fonctionnelles</h5>
+<p>Aucune.</p>
+<h4 id="sauthentifier">S’authentifier</h4>
+<h5 id="résumé-2">Résumé</h5>
+<p>Permet de se connecter à l’application.</p>
+<h5 id="acteur-2">Acteur</h5>
+<ul>
+<li>Visiteur</li>
+<li>Application mobile</li>
+</ul>
+<h5 id="pré-conditions-2">Pré-conditions</h5>
+<ul>
+<li>Ne pas déjà être authentifié.</li>
+</ul>
+<h5 id="contraintes-de-déploiement-2">Contraintes de déploiement</h5>
+<ul>
+<li>Disponible par internet.</li>
+</ul>
+<h5 id="scénario-nominal-2">Scénario nominal</h5>
+<ol type="1">
+<li>le visiteur saisi son email, mot de passe et valide. (envoi de ces informations via API dans le cas de l’application mobile)</li>
+<li>le système lui fournit un token JWT.</li>
+</ol>
+<h5 id="scénario-alternatif-informations-incorrectes">Scénario alternatif : informations incorrectes</h5>
+<p>Embranchement en 2, si les informations sont incorrectes.</p>
+<ol type="1">
+<li>Le système enregistre l’échec et le visiteur/application peut re-tenter.</li>
+</ol>
+<h5 id="post-conditions-2">Post-conditions</h5>
+<p>Le visiteur/l’applicatiob mobile dispose d’un token JWT.</p>
+<h5 id="contraintes-non-fonctionnelles-2">Contraintes non fonctionnelles</h5>
+<p>Pas de transfer en clair du mot de passe ou du token sur Internet.</p>
+<h4 id="se-déconnecter">Se déconnecter</h4>
+<h5 id="résumé-3">Résumé</h5>
+<p>Permet de se déconnecter de l’application.</p>
+<h5 id="acteur-3">Acteur</h5>
+<ul>
+<li>Membre</li>
+<li>Application mobile</li>
+</ul>
+<h5 id="pré-conditions-3">Pré-conditions</h5>
+<ul>
+<li>Être authentifié.</li>
+</ul>
+<h5 id="contraintes-de-déploiement-3">Contraintes de déploiement</h5>
+<ul>
+<li>Disponible par internet.</li>
+</ul>
+<h5 id="scénario-nominal-3">Scénario nominal</h5>
+<ol type="1">
+<li>le membre clique sur le lien de déconnexion.</li>
+<li>le système révoque le token JWT.</li>
+<li>le membre est redirigé vers la page d’accueil.</li>
+</ol>
+<h5 id="post-conditions-3">Post-conditions</h5>
+<p>La preuve d’identité est révoquée.</p>
+<h4 id="modifier-son-compte">Modifier son compte</h4>
+<h5 id="résumé-4">Résumé</h5>
+<p>Un membre peut modifier les informations concernant son compte.</p>
+<h5 id="acteurs-1">Acteurs</h5>
+<ul>
+<li>Le membre.</li>
+</ul>
+<h5 id="pré-conditions-4">Pré-conditions</h5>
+<ul>
+<li>Posséder un compte et être authentifié.</li>
+</ul>
+<h5 id="scénario-nominal-4">Scénario nominal</h5>
+<ol type="1">
+<li>Le membre active l’option menant à son compte.</li>
+<li>le système présente un formulaire (email, nom public et mot de passe avec confirmation).</li>
+<li>le visiteur renseigne le formulaire.</li>
+<li>quand les informations sont valides, le bouton d’envoi s’active.</li>
+<li>le visiteur utilise ce bouton.</li>
+<li>le système vérifie l’unicité du nom public, met à jour le compte puis redirige vers l’accueil.</li>
+</ol>
+<h5 id="scénario-derreur-nom-public-déjà-utilisé-1">Scénario d’erreur : nom public déjà utilisé</h5>
+<p>Si, en 6, le nom public est déjà utilisé, le visiteur est redirigé vers le formulaire (4.) et un message lui indique que le nom d’utilisateur est utilisé par un autre membre.</p>
+<h4 id="supprimer-son-compte">Supprimer son compte</h4>
+<h5 id="acteurs-2">Acteurs</h5>
+<ul>
+<li>Membre</li>
+</ul>
+<h5 id="pré-conditions-5">Pré-conditions</h5>
+<ul>
+<li>Posséder un compte et être authentifié.</li>
+</ul>
+<h5 id="scénario-nominal-5">Scénario nominal</h5>
+<ol type="1">
+<li>Le membre active l’option menant à son profil, puis celle de suppression du compte.</li>
+<li>le système demande confirmation.</li>
+<li>le membre confirme.</li>
+<li>le système supprime le compte.</li>
+<li>le membre est redirigé sur l’accueil. ### Groupe “Notes”</li>
+</ol>
+<p>Les notes doivent être comprises dans le sens de “prise de notes”. L’essentiel d’une note est donc son contenu (texte).</p>
+<div class="plantuml-diagram">
+<?plantuml 1.2026.1?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="DESCRIPTION" height="385px" preserveAspectRatio="none" style="width:407px;height:385px;background:#FFFFFF;" version="1.1" viewBox="0 0 407 385" width="407px" zoomAndPan="magnify">
+<defs/><g><!--cluster Gestion des notes--><g class="cluster" data-qualified-name="Gestion des notes" data-source-line="9" id="ent0006"><rect fill="none" height="370" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1;" width="199.98" x="201.7" y="7"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="142.0986" x="230.6407" y="21.9951">Gestion des notes</text></g><!--entity UC1--><g class="entity" data-qualified-name="Gestion des notes.UC1" data-source-line="10" id="ent0007"><ellipse cx="301.6886" cy="197.9957" fill="#F1F1F1" rx="69.5786" ry="16.3157" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="105.3145" x="249.0314" y="202.6442">Créer une note</text></g><!--entity UC2--><g class="entity" data-qualified-name="Gestion des notes.UC2" data-source-line="11" id="ent0008"><ellipse cx="301.6917" cy="128.9983" fill="#F1F1F1" rx="76.9417" ry="17.7883" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="123.4092" x="239.9872" y="133.6468">Modifier une note</text></g><!--entity UC3--><g class="entity" data-qualified-name="Gestion des notes.UC3" data-source-line="12" id="ent0009"><ellipse cx="301.6875" cy="268.9975" fill="#F1F1F1" rx="83.9875" ry="19.1975" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="139.9863" x="231.6943" y="273.6459">Supprimer une note</text></g><!--entity UC4--><g class="entity" data-qualified-name="Gestion des notes.UC4" data-source-line="13" id="ent0010"><ellipse cx="301.6929" cy="58.9966" fill="#F1F1F1" rx="73.5329" ry="17.1066" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="115.1514" x="244.1172" y="63.645">Publier une note</text></g><!--entity UC5--><g class="entity" data-qualified-name="Gestion des notes.UC5" data-source-line="14" id="ent0011"><ellipse cx="301.6935" cy="342.0007" fill="#F1F1F1" rx="83.5035" ry="19.1007" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="138.8652" x="232.2609" y="346.6491">Faire une remarque</text></g><!--entity Membre--><g class="entity" data-qualified-name="Membre" data-source-line="3" id="ent0002"><ellipse cx="81.853" cy="161.35" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M81.853,169.35 L81.853,196.35 M68.853,177.35 L94.853,177.35 M81.853,196.35 L68.853,211.35 M81.853,196.35 L94.853,211.35" fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57.5859" x="53.06" y="225.8451">Membre</text></g><!--entity MembreDeConfiance--><g class="entity" data-qualified-name="MembreDeConfiance" data-source-line="4" id="ent0003"><ellipse cx="81.8516" cy="36.35" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M81.8516,44.35 L81.8516,71.35 M68.8516,52.35 L94.8516,52.35 M81.8516,71.35 L68.8516,86.35 M81.8516,71.35 L94.8516,86.35" fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="151.7031" x="6" y="100.8451">Membre de confiance</text></g><!--entity ApplicationMobile--><g class="entity" data-qualified-name="ApplicationMobile" data-source-line="5" id="ent0004"><ellipse cx="81.8481" cy="312.35" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M81.8481,320.35 L81.8481,347.35 M68.8481,328.35 L94.8481,328.35 M81.8481,347.35 L68.8481,362.35 M81.8481,347.35 L94.8481,362.35" fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="130.1563" x="16.77" y="376.8451">Application mobile</text></g><!--link MembreDeConfiance to Membre--><g class="link" data-entity-1="ent0003" data-entity-2="ent0002" data-link-type="extension" data-source-line="7" id="lnk5"><path d="M81.85,104.49 C81.85,120.47 81.85,118.45 81.85,134.43" fill="none" id="MembreDeConfiance-to-Membre" style="stroke:#181818;stroke-width:1;"/><polygon fill="none" points="81.85,152.43,87.85,134.43,75.85,134.43,81.85,152.43" style="stroke:#181818;stroke-width:1;"/></g><!--link Membre to UC1--><g class="link" data-entity-1="ent0002" data-entity-2="ent0007" data-link-type="dependency" data-source-line="17" id="lnk12"><path d="M110.88,191.9 C141.45,192.88 185.4931,194.297 226.5131,195.617" fill="none" id="Membre-to-UC1" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="232.51,195.81,223.6433,191.5226,227.5126,195.6492,223.386,199.5185,232.51,195.81" style="stroke:#181818;stroke-width:1;"/></g><!--link Membre to UC2--><g class="link" data-entity-1="ent0002" data-entity-2="ent0008" data-link-type="dependency" data-source-line="18" id="lnk13"><path d="M110.88,183.02 C146.51,172.88 202.7992,156.8624 246.2292,144.5024" fill="none" id="Membre-to-UC2" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="252,142.86,242.2488,141.4763,247.191,144.2286,244.4386,149.1708,252,142.86" style="stroke:#181818;stroke-width:1;"/></g><!--link Membre to UC3--><g class="link" data-entity-1="ent0002" data-entity-2="ent0009" data-link-type="dependency" data-source-line="19" id="lnk14"><path d="M111.04,201.61 C133.41,209.99 165.5,221.91 193.7,232 C213.23,238.99 229.1558,244.5498 247.8058,250.9598" fill="none" id="Membre-to-UC3" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="253.48,252.91,246.2688,246.2019,248.7515,251.2848,243.6685,253.7675,253.48,252.91" style="stroke:#181818;stroke-width:1;"/></g><!--link MembreDeConfiance to UC4--><g class="link" data-entity-1="ent0003" data-entity-2="ent0010" data-link-type="dependency" data-source-line="20" id="lnk15"><path d="M158.12,63.58 C180.88,62.85 199.8031,62.2441 222.3531,61.5141" fill="none" id="MembreDeConfiance-to-UC4" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="228.35,61.32,219.2253,57.6133,223.3526,61.4818,219.4841,65.6091,228.35,61.32" style="stroke:#181818;stroke-width:1;"/></g><!--link ApplicationMobile to UC5--><g class="link" data-entity-1="ent0004" data-entity-2="ent0011" data-link-type="dependency" data-source-line="22" id="lnk16"><path d="M147.33,342 C169.41,342 188.43,342 211.76,342" fill="none" id="ApplicationMobile-to-UC5" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="217.76,342,208.76,338,212.76,342,208.76,346,217.76,342" style="stroke:#181818;stroke-width:1;"/></g><?plantuml-src RP0nRiCm34LtdeBGxg69imOe72IJWG153o3BT4B0bXnAcjeUgEVenMhBDL31uSRFnq_YzzG530w5R_U0BGkPmCu2Q1ESO4r38vGr9wgSxLXRGwWzgaN5bj2iklfRU1t7desU3MlNSByi_5DnIB82s7eNdyVrFCnVQNkR3DI5VDfioQDrWRp23y2feYUZ_KHKylDDWj5I0jHyzBrwoQ7QjTpn5jlbs5iSH-5Xo-rpxXgR_ebRcLDdFUMR6A51ooEkt06-rWYmA8xftQpTvUt-MLvfKW9iKrz6Xry0?></g>
+</svg>
+</div>
+<h4 id="créer-une-note-fille">Créer une note fille</h4>
+<p>On rappelle que la note “racine” est crée avec le compte. Il s’agit, pour un utilisateur donné de la seule note sans parent et elle ne peut pas être supprimée.</p>
+<h5 id="résumé-5">Résumé</h5>
+<p>Un membre crée une nouvelle note qui ne contient pas encore de texte.</p>
+<h5 id="acteur-4">Acteur</h5>
+<p>Le membre.</p>
+<h5 id="pré-conditions-6">Pré-conditions</h5>
+<p>Être en train d’éditer le texte d’une note, c’est à dire avoir positionné le curseur à l’intérieur du champs de saisie de celui-ci.</p>
+<h5 id="scénario-nominal-6">Scénario nominal</h5>
+<ol type="1">
+<li>le membre sélectionne l’option d’ajout de note.</li>
+<li>le système demande la langue (valeur par défaut héritée de la note parente) et le titre.</li>
+<li>l’utilisateur ajuste les valeurs évoquées ci-dessus et finalise.</li>
+<li>le système génère un ID pour la note fille, la crée, insère un lien vers la note fille dans la note parente et met à jour la note parente.</li>
+</ol>
+<h5 id="post-conditions-4">Post-conditions</h5>
+<ul>
+<li>une nouvelle note est créée.</li>
+<li>la note parente contient un lien vers la nouvelle note.</li>
+</ul>
+<h4 id="modifier-une-note">Modifier une note</h4>
+<h5 id="résumé-6">Résumé</h5>
+<p>Modification d’une note existante.</p>
+<h5 id="acteur-5">Acteur</h5>
+<ul>
+<li>Membre</li>
+</ul>
+<h5 id="pré-conditions-7">Pré-conditions</h5>
+<p>Aucune.</p>
+<h5 id="scénario-nominal-7">Scénario nominal</h5>
+<ol type="1">
+<li>Le membre navigue jusqu’à la note qu’il souhaite modifier.</li>
+<li>Lorsqu’il est sur la page d’édition…</li>
+</ol>
+<ul>
+<li>Il voit :
+<ul>
+<li>Le formulaire d’édition (ci-dessous).</li>
+<li>L’aperçu de la note.</li>
+</ul></li>
+<li>Il peut modifier :
+<ul>
+<li>le domaine associé à la note.</li>
+<li>les langues disponibles.</li>
+<li>pour chaque langue: le titre, le résumé et le contenu (texte).</li>
+<li>les tags.</li>
+<li>les commentaires privées (texte ne faisant pas partie du contenu des notes)</li>
+</ul></li>
+</ul>
+<p>Exception par rapport au comportement général des formulaires : le bouton de finalisation est toujours activé.</p>
+<ol start="3" type="1">
+<li>le membre demande la finalisation.</li>
+<li>le système sauvegarde la note (pas validation à ce stade).</li>
+</ol>
+<h5 id="contraintes-non-fonctionnelles-3">Contraintes non fonctionnelles</h5>
+<p>Aucune.</p>
+<h5 id="post-conditions-5">Post-conditions</h5>
+<p>La note est mise à jour.</p>
+<h4 id="supprimer-une-note">Supprimer une note</h4>
+<h5 id="résumé-7">Résumé</h5>
+<p>Suppression d’une note existante.</p>
+<h5 id="acteurs-3">Acteurs</h5>
+<ul>
+<li>Membre</li>
+</ul>
+<h5 id="pré-conditions-8">Pré-conditions</h5>
+<p>Aucune.</p>
+<h5 id="scénario-nominal-8">Scénario nominal</h5>
+<ol type="1">
+<li>le membre édite la note qu’il souhaite supprimer et ce n’est pas sa note racine.</li>
+<li>dans la section “configuration” il active l’option “supprimer”.</li>
+<li>le système demande confirmation.</li>
+<li>si confirmation, suppression de la note et redirection vers la note parente.</li>
+</ol>
+<h5 id="scénario-alternatif">Scénario alternatif</h5>
+<p>En 4., si l’utilisateur renonce le scénario s’arrête.</p>
+<h5 id="post-conditions-6">Post-conditions</h5>
+<ul>
+<li>la note est supprimée.</li>
+</ul>
+<h4 id="publier-une-note">Publier une note</h4>
+<h5 id="résumé-8">Résumé</h5>
+<p>C’est l’action par laquelle le membre partage sa note avec la communauté, sous la forme d’une unité d’apprentissage.</p>
+<h5 id="pré-conditions-9">Pré-conditions</h5>
+<p>Aucune : la re-publication, même si la note n’a pas changé, peut avoir un intérêt quand les voix sont améliorées au niveau du text to speach et est donc toujours possible si la note est valide (voir ci-dessous).</p>
+<h5 id="acteur-6">Acteur</h5>
+<ul>
+<li>Membre de confiance</li>
+</ul>
+<h5 id="contraintes-non-fonctionnelles-et-de-déploiement">Contraintes non-fonctionnelles et de déploiement</h5>
+<p>Les traitements audio sont effectués de manière asynchrone, dans le cloud. Le gain en coût d’un traitement hors cloud ayant été jugé marginal, cette option a été écartée.</p>
+<h5 id="scénario-nominal-9">Scénario nominal</h5>
+<ol type="1">
+<li>le membre de confiance édite la note qu’il souhaite publier.</li>
+<li>il se dirige vers la section “configuration” et active l’option “publier”.</li>
+<li>le système vérifie que la note est prête à être publiée :</li>
+</ol>
+<ul>
+<li>elle doit contenir, pour chaque langue, un titre, une description et un contenu.</li>
+<li>un domaine doit être sélectionné.</li>
+<li>le contenu textuel doit être valide.</li>
+</ul>
+<ol start="4" type="1">
+<li>le système demande confirmation.</li>
+<li>le membre de confiance confirme.</li>
+<li>le systme indique à l’utilisateur que la publication est prise en compte</li>
+<li>la note est transformée en unité (et écrase l’unité pré-existante) :</li>
+</ol>
+<ul>
+<li>d’une part en transcrivant les données (note vers unité) et en sauvegardant l’unité résultante.</li>
+</ul>
+<p>En réalité note et unité ont des structures très proches :</p>
+<p>Une note est composée de “transpositions” (propriétés : langues, titre, texte, …) Une unité contient des “pistes” (propriétés identiques à transposition)</p>
+<p>Les deux contiennent également un domaine et des tags.</p>
+<p>Les informations privées (commentaire, par exemple) ne sont pas copiées, et certaine transposition peuvent ne pas être exportées vers des pistes grâce à un champ qui active l’export ou pas.</p>
+<p>Cette transcription est donc presque une copie.</p>
+<p>L’unité est horodatée et sauvegardée (écrasée si existante).</p>
+<ul>
+<li>d’autre part en récupérant les fichiers audios nécessaires (TTS), en les traitant, et en les mettant à disposition sur le système de fichier.</li>
+</ul>
+<ol start="8" type="1">
+<li><p>la date de pulication de la note est mise à jour à partir de celle de l’unité (identiques).</p></li>
+<li><p>la note est sauvegardée.</p></li>
+<li><p>un email est envoyé à l’auteur de la note pour lui signaler que sa note est publiée</p></li>
+</ol>
+<h5 id="scénarios-alternatifs">Scénarios alternatifs</h5>
+<h6 id="problème-de-validation">Problème de validation</h6>
+<p>En 3., si la note n’est pas valide un message indique qu’il n’est pas possible de plublier une note invalide. Il n’est pas nécessaire de préciser la raison exacte car ce feedback est permanent.</p>
+<h6 id="renonciation">Renonciation</h6>
+<p>En 4., si l’utilisateur renonce, le scénario nominal s’arrête.</p>
+<h6 id="renonciation-1">Renonciation</h6>
+<p>En 7., en cas d’erreur technique lors de la génération de l’unité, un email est envoyé à l’utilisateur pour lui demander de réessayer plus tard.</p>
+<h5 id="post-conditions-7">Post-conditions</h5>
+<ul>
+<li>Les fichiers audios sont disponibles sur internet.</li>
+<li>L’unité est créée ou mise à jour.</li>
+<li>La note est mise à jour.</li>
+</ul>
+<h4 id="faire-une-remarque">Faire une remarque</h4>
+<h5 id="résumé-9">Résumé</h5>
+<p>Durant les exercices, les membres qui utilisent l’application mobile peuvent détecter des problèmes et souhaiter les signaler par le biais d’une remarque. Dans la mesure où l’application mobile ne fait pas partie du système, c’est elle, l’acteur qui émet la remarque de l’utilisateur.</p>
+<h5 id="acteurs-4">Acteurs</h5>
+<ul>
+<li>Application mobile.</li>
+</ul>
+<h5 id="contraintes-de-déploiement-4">Contraintes de déploiement</h5>
+<p>L’application mobile dialogue avec le système “notes” via Internet.</p>
+<h5 id="pré-conditions-10">Pré-conditions</h5>
+<p>L’application a un token JWT arpès s’être authentifiée (même API que login web).</p>
+<h5 id="scénario-nominal-10">Scénario nominal</h5>
+<ol type="1">
+<li>l’application mobile envoie les informations d’authentification dans une requête contenant :</li>
+</ol>
+<ul>
+<li>le token JWT</li>
+<li>l’ID de l’unité</li>
+<li>l’ID de l’exercice</li>
+<li>le contenu de la remarque</li>
+</ul>
+<p>2a. le système informe l’application que la requête a été prise en compte.</p>
+<p>2b. le système ajoute la remarque aux notes de façon asychrone non prioritaire.</p>
+<ol start="3" type="1">
+<li>un email est envoyé à l’auteur de la note avec un lien vers celle-ci.</li>
+</ol>
+<h5 id="scénario-alternatif-informations-incorrectes-1">Scénario alternatif : informations incorrectes</h5>
+<p>Embranchement en 2, si les informations d’authentification sont incorrectes.</p>
+<ol type="1">
+<li><p>Le système enregistre l’échec.</p></li>
+<li><p>Le système renvoi un code d’erreur non spécifique.</p></li>
+</ol>
+<h5 id="contraintes-non-fonctionnelles-4">Contraintes non fonctionnelles</h5>
+<ul>
+<li>les données d’authentification sont chiffrées.</li>
+</ul>
+<h5 id="post-conditions-8">Post-conditions</h5>
+<p>La note est enrichie de la remarque.</p>
+<h5 id="questions-en-suspend">Questions en suspend</h5>
+<p>L’application mobile ne dispose pas de référence vers la note, mais uniquement vers l’unité qui en est produite. Une projection des données sera donc nécessaire.</p>
+<h3 id="groupe-unités">Groupe “Unités”</h3>
+<p>Les unités doivent être comprises dans le sens de “unité d’apprentissage”, c’est à dire un ensemble contenant un cours, et éventuellement des exercices. Elles sont construites à partir de notes, durant leur publication.</p>
+<div class="plantuml-diagram">
+<?plantuml 1.2026.1?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="DESCRIPTION" height="494px" preserveAspectRatio="none" style="width:458px;height:494px;background:#FFFFFF;" version="1.1" viewBox="0 0 458 494" width="458px" zoomAndPan="magnify">
+<defs/><g><!--cluster Gestion des unit?s--><g class="cluster" data-qualified-name="Gestion des unit.s" data-source-line="7" id="ent0005"><rect fill="none" height="481" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1;" width="271.87" x="180.16" y="7"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="147.2461" x="242.472" y="21.9951">Gestion des unités</text></g><!--entity UC3--><g class="entity" data-qualified-name="Gestion des unit.s.UC3" data-source-line="8" id="ent0006"><ellipse cx="316.0892" cy="364.0038" fill="#F1F1F1" rx="91.4192" ry="20.6838" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="156.9463" x="237.6161" y="368.6523">Rechercher des unités</text></g><!--entity UC4--><g class="entity" data-qualified-name="Gestion des unit.s.UC4" data-source-line="9" id="ent0007"><ellipse cx="316.0921" cy="289.0024" fill="#F1F1F1" rx="83.4121" ry="19.0824" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="138.6533" x="246.7655" y="293.6509">Visualiser une unité</text></g><!--entity UC5--><g class="entity" data-qualified-name="Gestion des unit.s.UC5" data-source-line="10" id="ent0008"><ellipse cx="316.0865" cy="214.0033" fill="#F1F1F1" rx="90.5165" ry="20.5033" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="154.9092" x="238.6319" y="218.6517">S’abonner à une unité</text></g><!--entity UC6--><g class="entity" data-qualified-name="Gestion des unit.s.UC6" data-source-line="11" id="ent0009"><ellipse cx="316.086" cy="134.9972" fill="#F1F1F1" rx="105.736" ry="23.5472" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="188.624" x="221.774" y="139.6456">Se désabonner d’une unité</text></g><!--entity UC2--><g class="entity" data-qualified-name="Gestion des unit.s.UC2" data-source-line="12" id="ent0010"><ellipse cx="316.0874" cy="58.9995" fill="#F1F1F1" rx="75.0474" ry="17.4095" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="118.8428" x="256.666" y="63.6479">Retirer une unité</text></g><!--entity UC9--><g class="entity" data-qualified-name="Gestion des unit.s.UC9" data-source-line="13" id="ent0011"><ellipse cx="316.0947" cy="445.9969" fill="#F1F1F1" rx="119.9347" ry="26.3869" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="219.2148" x="206.4872" y="450.6454">Extraire les unités d’un compte</text></g><!--entity Membre--><g class="entity" data-qualified-name="Membre" data-source-line="3" id="ent0002"><ellipse cx="71.083" cy="127.35" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M71.083,135.35 L71.083,162.35 M58.083,143.35 L84.083,143.35 M71.083,162.35 L58.083,177.35 M71.083,162.35 L84.083,177.35" fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57.5859" x="42.29" y="191.8451">Membre</text></g><!--entity Visiteur--><g class="entity" data-qualified-name="Visiteur" data-source-line="4" id="ent0003"><ellipse cx="71.0809" cy="259.35" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M71.0809,267.35 L71.0809,294.35 M58.0809,275.35 L84.0809,275.35 M71.0809,294.35 L58.0809,309.35 M71.0809,294.35 L84.0809,309.35" fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="53.3818" x="44.39" y="323.8451">Visiteur</text></g><!--entity ApplicationMobile--><g class="entity" data-qualified-name="ApplicationMobile" data-source-line="5" id="ent0004"><ellipse cx="71.0781" cy="416.35" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M71.0781,424.35 L71.0781,451.35 M58.0781,432.35 L84.0781,432.35 M71.0781,451.35 L58.0781,466.35 M71.0781,451.35 L84.0781,466.35" fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="130.1563" x="6" y="480.8451">Application mobile</text></g><!--link Visiteur to UC3--><g class="link" data-entity-1="ent0003" data-entity-2="ent0006" data-link-type="dependency" data-source-line="16" id="lnk12"><path d="M98.18,299.42 C118.24,307.24 146.73,317.94 172.16,326 C198.35,334.3 221.8002,340.8014 247.0002,347.3014" fill="none" id="Visiteur-to-UC3" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="252.81,348.8,245.0943,342.6789,247.9685,347.5512,243.0962,350.4254,252.81,348.8" style="stroke:#181818;stroke-width:1;"/></g><!--link Visiteur to UC4--><g class="link" data-entity-1="ent0003" data-entity-2="ent0007" data-link-type="dependency" data-source-line="17" id="lnk13"><path d="M98.08,289 C129.92,289 179.38,289 226.27,289" fill="none" id="Visiteur-to-UC4" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="232.27,289,223.27,285,227.27,289,223.27,293,232.27,289" style="stroke:#181818;stroke-width:1;"/></g><!--link Membre to Visiteur--><g class="link" data-entity-1="ent0002" data-entity-2="ent0003" data-link-type="extension" data-source-line="19" id="lnk14"><path d="M71.08,195.38 C71.08,213.79 71.08,214.19 71.08,232.59" fill="none" id="Membre-to-Visiteur" style="stroke:#181818;stroke-width:1;"/><polygon fill="none" points="71.08,250.59,77.08,232.59,65.08,232.59,71.08,250.59" style="stroke:#181818;stroke-width:1;"/></g><!--link Membre to UC5--><g class="link" data-entity-1="ent0002" data-entity-2="ent0008" data-link-type="dependency" data-source-line="21" id="lnk15"><path d="M99.95,163.54 C136.8,172.18 196.9285,186.2901 246.1385,197.8301" fill="none" id="Membre-to-UC5" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="251.98,199.2,244.131,193.2508,247.1121,198.0584,242.3045,201.0395,251.98,199.2" style="stroke:#181818;stroke-width:1;"/></g><!--link Membre to UC6--><g class="link" data-entity-1="ent0002" data-entity-2="ent0009" data-link-type="dependency" data-source-line="22" id="lnk16"><path d="M99.95,154.48 C128.69,151.87 169.1845,148.2112 211.5845,144.3712" fill="none" id="Membre-to-UC6" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="217.56,143.83,208.2359,140.6581,212.5804,144.281,208.9575,148.6255,217.56,143.83" style="stroke:#181818;stroke-width:1;"/></g><!--link Membre to UC2--><g class="link" data-entity-1="ent0002" data-entity-2="ent0010" data-link-type="dependency" data-source-line="24" id="lnk17"><path d="M100.06,135.93 C119.42,122.25 146.26,104.98 172.16,94 C198.27,82.93 222.7432,76.1373 248.7332,70.5673" fill="none" id="Membre-to-UC2" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="254.6,69.31,244.9616,67.2848,249.711,70.3578,246.638,75.1072,254.6,69.31" style="stroke:#181818;stroke-width:1;"/></g><!--link ApplicationMobile to UC9--><g class="link" data-entity-1="ent0004" data-entity-2="ent0011" data-link-type="dependency" data-source-line="26" id="lnk18"><path d="M136.56,446 C154.84,446 169.35,446 189.77,446" fill="none" id="ApplicationMobile-to-UC9" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="195.77,446,186.77,442,190.77,446,186.77,450,195.77,446" style="stroke:#181818;stroke-width:1;"/></g><?plantuml-src RP6zJiCm4CVtUufJbavPIbkfIoM445CN4EoESxIM4Zkopn8Iy2wiF4TVZ8lhKfnWoSFzxtVV7RqoiaDl3aV6rdZIR9m5K9gTnptrZQTil9XWcABFvkqmT4Qh4T-xndI4Ac3rHyK-oHN0c5NPWo3L0uNaQobWj8PFtw72Tq1vCP1MGPX7qaVouoynoVzyTrEoqbHKdGd2HakPpUYgH9yMgd7M2ddwciFh2KpOIj5BHBkO1MocJRDixvykbYLt_yPU2OdTTRIK7hNh1wOSjOLFWCl6iQvtQVI9i08uNmZhZztrFhzYWjQbkPcubm3pIvvTsny0?></g>
+</svg>
+</div>
+<h4 id="retirer-une-unité">Retirer une unité</h4>
+<h5 id="pré-conditions-11">Pré-conditions</h5>
+<p>Le membre est l’auteur de l’unité.</p>
+<h5 id="résumé-10">Résumé</h5>
+<p>C’est l’opération inverse de la publication.</p>
+<h5 id="scénario-nominal-11">Scénario nominal</h5>
+<ol type="1">
+<li>Le membre visualise l’unité qu’il souhaite retirer.</li>
+<li>En temps qu’auteur, il dispose d’une option “supprimer”, qu’il active.</li>
+<li>Le système demande confirmation.</li>
+<li>L’unité est supprimée.</li>
+</ol>
+<h4 id="rechercher-des-unités">Rechercher des unités</h4>
+<h5 id="résumé-11">Résumé</h5>
+<p>Il s’agit de lister les unités qui contiennent certains mots.</p>
+<h5 id="acteur-7">Acteur</h5>
+<p>N’importe quel visiteur.</p>
+<h5 id="contraintes-de-déploiement-5">Contraintes de déploiement</h5>
+<p>La fonctionnalité est disponible par Internet.</p>
+<h5 id="pré-conditions-12">Pré-conditions</h5>
+<p>Aucune.</p>
+<h5 id="scénario-nominal-12">Scénario nominal</h5>
+<ol type="1">
+<li><p>le visiteur saisi des mots dans la barre de recherche et valide.</p></li>
+<li><p>le système recherche les unités contenant tous les mots clés (dans : titres, descriptions, tags et nom de l’auteur) et affiche la liste des 20 premières. Pour chaque unité on peut voir :</p></li>
+</ol>
+<ul>
+<li>son titre</li>
+<li>sa description</li>
+<li>ses tags</li>
+<li>ses langues</li>
+<li>le nom de l’auteur</li>
+<li>le nombre d’abonnés</li>
+</ul>
+<h5 id="scénario-alternatif-pas-de-résultats">Scénario alternatif : pas de résultats</h5>
+<p>Embranchement en 2, s’il n’y a pas de résultats :</p>
+<p>Le système affiche une page indiquant qu’il n’y pas de résultat et suggère de supprimer des mots de filtrage.</p>
+<h5 id="post-conditions-9">Post-conditions</h5>
+<p>Le cas d’utilisation n’induit pas de changement.</p>
+<h4 id="visualiser-une-unité">Visualiser une unité</h4>
+<h5 id="pré-conditions-13">Pré-conditions</h5>
+<p>Aucune.</p>
+<h5 id="scénario-nominal-13">Scénario nominal</h5>
+<ol type="1">
+<li><p>le visiteur accède à une unité (par exemple après une recherche).</p></li>
+<li><p>le système affiche :</p></li>
+</ol>
+<p>Le chemin de domaines de l’unité (Sciences Humaines &gt; Management &gt; Théorie des organisations)</p>
+<p>A propos : - titre - description - le nombre d’abonnés - les langues prises en charge - l’auteur</p>
+<p>Avis: - liste des avis avec notes</p>
+<p>Aperçu du contenu</p>
+<p>Des options contextuelles : - s’abonner / se désabonner - retirer l’unité - donner son avis</p>
+<h4 id="sabonner-à-une-unité">S’abonner à une unité</h4>
+<h5 id="résumé-12">Résumé</h5>
+<p>Le membre peut s’abonner à une unité, ce qui (indirectement) la rend disponible sur son téléphone mobile pour apprentissage.</p>
+<h5 id="acteurs-5">Acteurs</h5>
+<ul>
+<li>Membre</li>
+</ul>
+<h5 id="pré-conditions-14">Pré-conditions</h5>
+<p>Ne pas être abonné à l’unité.</p>
+<h5 id="contraintes-de-déploiement-6">Contraintes de déploiement</h5>
+<p>La fonctionnalité est disponible par Internet.</p>
+<h5 id="scénario-nominal-14">Scénario nominal</h5>
+<ol type="1">
+<li><p>Depuis la page de visualisation de l’unité, le membre active l’option “abonnement”.</p></li>
+<li><p>Le système sauvegarde le fait que le membre est abonné à l’unité.</p></li>
+<li><p>L’option “abonnement” est remplacée par l’option “désabonnement”.</p></li>
+</ol>
+<h5 id="post-conditions-10">Post-conditions</h5>
+<p>Le membre est abonné à l’unité.</p>
+<h5 id="contraintes-non-fonctionnelles-5">Contraintes non fonctionnelles</h5>
+<p>Aucune.</p>
+<h4 id="se-désabonner-dune-unité">Se désabonner d’une unité</h4>
+<h5 id="résumé-13">Résumé</h5>
+<p>Le membre peut se désabonner d’une unité, ce qui (indirectement) la fait disparaître de son téléphone mobile.</p>
+<h5 id="acteurs-6">Acteurs</h5>
+<ul>
+<li>Membre</li>
+</ul>
+<h5 id="contraintes-de-déploiement-7">Contraintes de déploiement</h5>
+<p>La fonctionnalité est disponible par Internet.</p>
+<h5 id="pré-conditions-15">Pré-conditions</h5>
+<p>Être abonné à l’unité.</p>
+<h5 id="scénario-nominal-15">Scénario nominal</h5>
+<ol type="1">
+<li><p>Depuis la page de visualisation de l’unité, le membre active l’option “désabonnement”.</p></li>
+<li><p>Le système enregistre ce choix.</p></li>
+<li><p>L’option de désabonnement est remplacée par l’option d’abonnement.</p></li>
+</ol>
+<h5 id="post-conditions-11">Post-conditions</h5>
+<p>Le membre n’est plus abonné à l’unité.</p>
+<h5 id="contraintes-non-fonctionnelles-6">Contraintes non fonctionnelles</h5>
+<p>Aucune.</p>
+<h4 id="extraire-les-unités-dun-compte">Extraire les unités d’un compte</h4>
+<h5 id="résumé-14">Résumé</h5>
+<p>Ce cas d’utilisation permet à l’application mobile de connaître la liste des unités auxquelles est abonné son utilisateur. L’application mobile ne fait pas partie du système étudié dans ce document, c’est donc un acteur.</p>
+<h5 id="acteurs-7">Acteurs</h5>
+<p>L’application mobile.</p>
+<h5 id="contraintes-de-déploiement-8">Contraintes de déploiement</h5>
+<p>L’application mobile interroge le système “unités” via Internet.</p>
+<h5 id="pré-conditions-16">Pré-conditions</h5>
+<p>L’application a un token JWT arpès s’être authentifiée (même API que login web).</p>
+<h5 id="scénario-nominal-16">Scénario nominal</h5>
+<ol type="1">
+<li><p>l’application mobile demande la liste des unités pour son utilisateur.</p></li>
+<li><p>le système lui envoie la liste.</p></li>
+</ol>
+<h5 id="scénario-alternatif-informations-incorrectes-2">Scénario alternatif : informations incorrectes</h5>
+<p>Embranchement en 2, si les informations sont incorrectes.</p>
+<ol type="1">
+<li><p>Le système enregistre l’échec. Si l’email existe, l’échec est associé au compte.</p></li>
+<li><p>Le système renvoi un code d’erreur non spécifique.</p></li>
+</ol>
+<h5 id="contraintes-non-fonctionnelles-7">Contraintes non fonctionnelles</h5>
+<ul>
+<li>les données d’authentification sont chiffrées.</li>
+</ul>
+<h5 id="post-conditions-12">Post-conditions</h5>
+<p>L’application mobile dispose de la liste d’unités mise à jour pour son utilisateur.</p>
+</body>
+</html>
