@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FeatMatrix Demo</title>
+  <style>
+    /* Reset & base */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { font-size: 16px; line-height: 1.6; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      color: #1f2328;
+      background: #fff;
+      margin: 0;
+      padding: 2em;
+      max-width: 980px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Headings */
+    h1, h2, h3, h4, h5, h6 { margin-top: 1.5em; margin-bottom: 0.5em; font-weight: 600; color: #1f2328; }
+    h1 { font-size: 2em; padding-bottom: 0.3em; border-bottom: 1px solid #d1d9e0; }
+    h2 { font-size: 1.5em; padding-bottom: 0.3em; border-bottom: 1px solid #d1d9e0; }
+    h3 { font-size: 1.25em; }
+    h4 { font-size: 1em; }
+
+    /* Links */
+    a { color: #0969da; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Paragraphs & lists */
+    p { margin: 0 0 16px; }
+    ul, ol { padding-left: 2em; margin-bottom: 16px; }
+    li { margin-bottom: 4px; }
+
+    /* Code */
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.85em;
+      background: #f6f8fa;
+      border-radius: 6px;
+      padding: 0.2em 0.4em;
+    }
+    pre {
+      background: #f6f8fa;
+      border-radius: 6px;
+      padding: 16px;
+      overflow: auto;
+      line-height: 1.45;
+      margin-bottom: 16px;
+    }
+    pre code { background: none; padding: 0; font-size: 0.85em; }
+
+    /* Blockquotes */
+    blockquote {
+      margin: 0 0 16px;
+      padding: 0 1em;
+      color: #656d76;
+      border-left: 4px solid #d1d9e0;
+    }
+
+    /* Tables */
+    table { border-collapse: collapse; width: 100%; margin-bottom: 16px; }
+    th, td { border: 1px solid #d1d9e0; padding: 6px 13px; text-align: left; }
+    th { background: #f6f8fa; font-weight: 600; }
+    tr:nth-child(even) { background: #f6f8fa; }
+
+    /* Horizontal rules */
+    hr { border: none; border-top: 1px solid #d1d9e0; margin: 24px 0; }
+
+    /* Images & SVG */
+    img, svg { max-width: 100%; height: auto; }
+
+    /* Diagram containers */
+    .plantuml, .mermaid-diagram { text-align: center; margin: 16px 0; }
+
+    /* Callout components */
+    .callout {
+      border-radius: 6px;
+      border-left: 4px solid;
+      padding: 12px 16px;
+      margin: 16px 0;
+    }
+    .callout-title { font-weight: 600; margin-bottom: 4px; }
+    .callout-body > p:last-child { margin-bottom: 0; }
+    .callout-note    { border-color: #0969da; background: #ddf4ff; }
+    .callout-tip     { border-color: #1a7f37; background: #dafbe1; }
+    .callout-warning { border-color: #bf8700; background: #fff8c5; }
+    .callout-danger  { border-color: #cf222e; background: #ffebe9; }
+
+    /* Bold & emphasis */
+    strong { font-weight: 600; color: #1f2328; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body { padding: 1em; font-size: 14px; }
+    }
+
+    @media print {
+      body { max-width: none; padding: 0; }
+      h1, h2, h3, h4, h5, h6 { page-break-after: avoid; }
+      pre { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<h1>FeatMatrix</h1>
+<p>Compare options against prioritized features using MoSCoW requirements.</p>
+<p>Set the <strong>priority</strong> for each feature, and watch options reorder by score.</p>
+<div><style>
+.fm-container {
+  font-family: system-ui, -apple-system, sans-serif;
+  overflow-x: auto;
+}
+.fm-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.fm-table th,
+.fm-table td {
+  padding: 8px 12px;
+  border: 1px solid #d1d9e0;
+  text-align: left;
+  vertical-align: top;
+}
+.fm-table thead th {
+  background: #f6f8fa;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.fm-th-feature { min-width: 180px; }
+.fm-td-feature {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.fm-feature-label { font-weight: 500; }
+.fm-feature-desc { font-size: 12px; opacity: 0.7; }
+.fm-th-moscow { min-width: 120px; }
+.fm-moscow-select {
+  width: 100%;
+  padding: 4px 6px;
+  border: 1px solid #d1d9e0;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 13px;
+  cursor: pointer;
+}
+.fm-moscow-must td   { background: rgba(255, 0, 0, 0.06); }
+.fm-moscow-should td { background: rgba(255, 140, 0, 0.06); }
+.fm-moscow-could td  { background: transparent; }
+.fm-moscow-wont td   { background: rgba(0, 0, 0, 0.03); }
+.fm-moscow-wont .fm-feature-label,
+.fm-moscow-wont .fm-feature-desc { opacity: 0.5; }
+.fm-th-option { min-width: 100px; text-align: center; }
+.fm-option-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.fm-option-label { font-weight: 600; }
+.fm-option-score {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0969da;
+}
+.fm-score-bar {
+  width: 100%;
+  height: 4px;
+  background: #e8e8e8;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.fm-score-fill {
+  height: 100%;
+  background: #0969da;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+.fm-td-support {
+  text-align: center;
+  font-size: 16px;
+}
+.fm-support-ootb          { background: rgba(82, 196, 26, 0.08) !important; }
+.fm-support-configuration { background: rgba(22, 119, 255, 0.08) !important; }
+.fm-support-customization { background: rgba(250, 173, 20, 0.08) !important; }
+.fm-support-not-supported { background: rgba(255, 77, 79, 0.08) !important; }
+.fm-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 12px 0;
+  font-size: 13px;
+  opacity: 0.8;
+}
+.fm-legend-item { white-space: nowrap; }
+</style><div id="feat-matrix-demo"></div><script type="module">
+import React from "https://esm.sh/react@19?dev";
+import ReactDOM from "https://esm.sh/react-dom@19/client?dev";
+
+const { useState, useMemo, createElement: h } = React;
+
+const SUPPORT_INFO = {
+  'ootb':          { label: 'Out of the Box',  emoji: '\u2705', score: 3 },
+  'configuration': { label: 'Configuration',   emoji: '\uD83D\uDD27', score: 2 },
+  'customization': { label: 'Customization',   emoji: '\uD83D\uDD28', score: 1 },
+  'not-supported': { label: 'Not Supported',   emoji: '\u274C', score: 0 },
+};
+
+const MOSCOW_INFO = {
+  'must':   { label: 'Must have',   short: 'M', weight: 8 },
+  'should': { label: 'Should have', short: 'S', weight: 4 },
+  'could':  { label: 'Could have',  short: 'C', weight: 2 },
+  'wont':   { label: "Won't have",  short: 'W', weight: 0 },
+};
+
+const MOSCOW_LEVELS = ['must', 'should', 'could', 'wont'];
+
+function computeScore(option, features, moscow) {
+  let score = 0;
+  for (const f of features) {
+    const weight = MOSCOW_INFO[moscow[f.id] || 'could'].weight;
+    const sup = option.support[f.id];
+    score += weight * (sup ? SUPPORT_INFO[sup].score : 0);
+  }
+  return score;
+}
+
+function FeatMatrix({ features, options }) {
+  const [moscow, setMoscow] = useState(() => {
+    const init = {};
+    for (const f of features) init[f.id] = 'could';
+    return init;
+  });
+
+  const scored = useMemo(() =>
+    options
+      .map(opt => ({ option: opt, score: computeScore(opt, features, moscow) }))
+      .sort((a, b) => b.score - a.score),
+    [options, features, moscow]
+  );
+
+  const maxScore = useMemo(() => Math.max(1, ...scored.map(s => s.score)), [scored]);
+
+  const sorted = useMemo(() =>
+    [...features].sort((a, b) =>
+      MOSCOW_INFO[moscow[b.id] || 'could'].weight - MOSCOW_INFO[moscow[a.id] || 'could'].weight
+    ),
+    [features, moscow]
+  );
+
+  return h("div", { className: "fm-container" },
+    h("table", { className: "fm-table" },
+      h("thead", null,
+        h("tr", null,
+          h("th", { className: "fm-th-feature" }, "Feature"),
+          h("th", { className: "fm-th-moscow" }, "Priority"),
+          ...scored.map(({ option, score }) =>
+            h("th", { key: option.id, className: "fm-th-option" },
+              h("div", { className: "fm-option-header" },
+                h("span", { className: "fm-option-label" }, option.label),
+                h("span", { className: "fm-option-score" }, score),
+                h("div", { className: "fm-score-bar" },
+                  h("div", { className: "fm-score-fill", style: { width: (score / maxScore * 100) + "%" } })
+                )
+              )
+            )
+          )
+        )
+      ),
+      h("tbody", null,
+        ...sorted.map(feature =>
+          h("tr", { key: feature.id, className: "fm-row fm-moscow-" + (moscow[feature.id] || "could") },
+            h("td", { className: "fm-td-feature" },
+              h("span", { className: "fm-feature-label" }, feature.label),
+              feature.description ? h("span", { className: "fm-feature-desc" }, feature.description) : null
+            ),
+            h("td", { className: "fm-td-moscow" },
+              h("select", {
+                className: "fm-moscow-select",
+                value: moscow[feature.id] || "could",
+                onChange: e => setMoscow(prev => ({ ...prev, [feature.id]: e.target.value })),
+              },
+                ...MOSCOW_LEVELS.map(level =>
+                  h("option", { key: level, value: level },
+                    MOSCOW_INFO[level].short + " - " + MOSCOW_INFO[level].label
+                  )
+                )
+              )
+            ),
+            ...scored.map(({ option }) => {
+              const sup = option.support[feature.id];
+              const info = sup ? SUPPORT_INFO[sup] : undefined;
+              return h("td", {
+                key: option.id,
+                className: "fm-td-support " + (sup ? "fm-support-" + sup : "fm-support-unknown"),
+                title: info ? info.label : undefined,
+              }, info ? info.emoji : "\u2014");
+            })
+          )
+        )
+      )
+    ),
+    h("div", { className: "fm-legend" },
+      ...Object.entries(SUPPORT_INFO).map(([key, { label, emoji }]) =>
+        h("span", { key, className: "fm-legend-item" }, emoji + " " + label)
+      )
+    )
+  );
+}
+
+const data = {"features":[{"id":"auth","label":"Authentication","description":"SSO, OAuth2, MFA"},{"id":"rbac","label":"Role-based access"},{"id":"audit","label":"Audit logging","description":"Immutable audit trail"},{"id":"api","label":"REST API"},{"id":"plugins","label":"Plugin system","description":"Third-party extensions"},{"id":"i18n","label":"Internationalization"}],"options":[{"id":"alpha","label":"Alpha Platform","support":{"auth":"ootb","rbac":"ootb","audit":"configuration","api":"ootb","plugins":"customization","i18n":"not-supported"}},{"id":"beta","label":"Beta Suite","support":{"auth":"configuration","rbac":"customization","audit":"ootb","api":"ootb","plugins":"ootb","i18n":"configuration"}},{"id":"gamma","label":"Gamma Framework","support":{"auth":"customization","rbac":"not-supported","audit":"not-supported","api":"configuration","plugins":"ootb","i18n":"ootb"}}]};
+const root = ReactDOM.createRoot(document.getElementById("feat-matrix-demo"));
+root.render(h(FeatMatrix, data));
+</script></div>
+<h2>How it works</h2>
+<ol>
+<li>Set the <strong>priority</strong> (MoSCoW) for each feature using the dropdown in the Priority column</li>
+<li>Options are automatically <strong>scored and reordered</strong> — best match first</li>
+<li>Features are sorted by priority — Must-haves appear at the top</li>
+</ol>
+<h3>Scoring</h3>
+<p>Each feature contributes <code>moscow_weight x support_score</code> to an option&#x27;s total:</p>
+<table><thead><tr><th>MoSCoW</th><th>Weight</th><th>Support Level</th><th>Score</th></tr></thead><tbody><tr><td>Must</td><td>8</td><td>Out of the Box</td><td>3</td></tr><tr><td>Should</td><td>4</td><td>Configuration</td><td>2</td></tr><tr><td>Could</td><td>2</td><td>Customization</td><td>1</td></tr><tr><td>Won&#x27;t</td><td>0</td><td>Not Supported</td><td>0</td></tr></tbody></table>
+<h2>React usage</h2>
+<pre><code class="language-tsx">import { FeatMatrix } from &#x27;feat-matrix&#x27;;
+import &#x27;feat-matrix/styles.css&#x27;;
+
+&lt;FeatMatrix features={features} options={options} /&gt;
+</code></pre>
+</body>
+</html>
