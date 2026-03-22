@@ -151,10 +151,14 @@
   font-size: 13px;
   cursor: pointer;
 }
-.fm-moscow-must td   { background: rgba(255, 0, 0, 0.06); }
-.fm-moscow-should td { background: rgba(255, 140, 0, 0.06); }
-.fm-moscow-could td  { background: transparent; }
-.fm-moscow-wont td   { background: rgba(0, 0, 0, 0.03); }
+.fm-moscow-must .fm-td-feature,
+.fm-moscow-must .fm-td-moscow     { background: rgba(255, 0, 0, 0.06); }
+.fm-moscow-should .fm-td-feature,
+.fm-moscow-should .fm-td-moscow   { background: rgba(255, 140, 0, 0.06); }
+.fm-moscow-could .fm-td-feature,
+.fm-moscow-could .fm-td-moscow    { background: transparent; }
+.fm-moscow-wont .fm-td-feature,
+.fm-moscow-wont .fm-td-moscow     { background: rgba(0, 0, 0, 0.03); }
 .fm-moscow-wont .fm-feature-label,
 .fm-moscow-wont .fm-feature-desc { opacity: 0.5; }
 .fm-th-option { min-width: 100px; text-align: center; }
@@ -187,10 +191,6 @@
   text-align: center;
   font-size: 16px;
 }
-.fm-support-ootb          { background: rgba(82, 196, 26, 0.08) !important; }
-.fm-support-configuration { background: rgba(22, 119, 255, 0.08) !important; }
-.fm-support-customization { background: rgba(250, 173, 20, 0.08) !important; }
-.fm-support-not-supported { background: rgba(255, 77, 79, 0.08) !important; }
 .fm-legend {
   display: flex;
   flex-wrap: wrap;
@@ -221,6 +221,18 @@ const MOSCOW_INFO = {
 };
 
 const MOSCOW_LEVELS = ['must', 'should', 'could', 'wont'];
+
+const MAX_SUPPORT_SCORE = 3;
+const MAX_CELL_SCORE = MOSCOW_INFO['must'].weight * MAX_SUPPORT_SCORE; // 24
+
+function computeCellScore(weight, supportScore) {
+  return weight * (MAX_SUPPORT_SCORE - supportScore);
+}
+
+function cellBackground(cellScore) {
+  const alpha = (cellScore / MAX_CELL_SCORE) * 0.4;
+  return "rgba(220, 80, 80, " + alpha.toFixed(3) + ")";
+}
 
 function computeScore(option, features, moscow) {
   let score = 0;
@@ -297,10 +309,14 @@ function FeatMatrix({ features, options }) {
             ...scored.map(({ option }) => {
               const sup = option.support[feature.id];
               const info = sup ? SUPPORT_INFO[sup] : undefined;
+              const weight = MOSCOW_INFO[moscow[feature.id] || 'could'].weight;
+              const supScore = info ? info.score : 0;
+              const cs = computeCellScore(weight, supScore);
               return h("td", {
                 key: option.id,
                 className: "fm-td-support " + (sup ? "fm-support-" + sup : "fm-support-unknown"),
                 title: info ? info.label : undefined,
+                style: { backgroundColor: cellBackground(cs) },
               }, info ? info.emoji : "\u2014");
             })
           )
