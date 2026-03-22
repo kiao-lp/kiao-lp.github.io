@@ -117,6 +117,23 @@
     sans-serif;
   overflow-x: auto;
 }
+.fm-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 4px 0;
+}
+.fm-export-btn {
+  padding: 4px 12px;
+  border: 1px solid var(--fm-border, #e0e0e0);
+  border-radius: 4px;
+  background: var(--fm-input-bg, #fff);
+  color: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.fm-export-btn:hover {
+  background: var(--fm-header-bg, #f5f5f5);
+}
 .fm-table {
   width: 100%;
   border-collapse: collapse;
@@ -362,8 +379,8 @@ root.render(h(FeatMatrix, data));
 <p>Each feature contributes <code>moscow_weight x support_score</code> to an option&#x27;s total:</p>
 <table><thead><tr><th>MoSCoW</th><th>Weight</th><th>Support Level</th><th>Score</th></tr></thead><tbody><tr><td>Must</td><td>8</td><td>Out of the Box</td><td>3</td></tr><tr><td>Should</td><td>4</td><td>Configuration</td><td>2</td></tr><tr><td>Could</td><td>2</td><td>Customization</td><td>1</td></tr><tr><td>Won&#x27;t</td><td>0</td><td>Not Supported</td><td>0</td></tr></tbody></table>
 <h2>React usage</h2>
-<pre><code class="language-tsx">import { FeatMatrix } from &#x27;feat-matrix&#x27;;
-import &#x27;feat-matrix/styles.css&#x27;;
+<pre><code class="language-tsx">import { FeatMatrix } from &#x27;featmat&#x27;;
+import &#x27;featmat/styles.css&#x27;;
 
 &lt;FeatMatrix features={features} options={options} /&gt;
 </code></pre>
