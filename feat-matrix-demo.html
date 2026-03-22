@@ -109,9 +109,12 @@
 <h1>FeatMatrix</h1>
 <p>Compare options against prioritized features using MoSCoW requirements.</p>
 <p>Set the <strong>priority</strong> for each feature, and watch options reorder by score.</p>
-<div><style>
+<div><style>/* src/components/FeatMatrix.css */
 .fm-container {
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
   overflow-x: auto;
 }
 .fm-table {
@@ -122,68 +125,93 @@
 .fm-table th,
 .fm-table td {
   padding: 8px 12px;
-  border: 1px solid #d1d9e0;
+  border: 1px solid var(--fm-border, #e0e0e0);
   text-align: left;
   vertical-align: top;
 }
 .fm-table thead th {
-  background: #f6f8fa;
+  background: var(--fm-header-bg, #f5f5f5);
   font-weight: 600;
   position: sticky;
   top: 0;
   z-index: 1;
 }
-.fm-th-feature { min-width: 180px; }
+.fm-th-feature {
+  min-width: 180px;
+}
 .fm-td-feature {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
-.fm-feature-label { font-weight: 500; }
-.fm-feature-desc { font-size: 12px; opacity: 0.7; }
-.fm-th-moscow { min-width: 120px; }
+.fm-feature-label {
+  font-weight: 500;
+}
+.fm-feature-desc {
+  font-size: 12px;
+  opacity: 0.7;
+}
+.fm-th-moscow {
+  min-width: 120px;
+}
 .fm-moscow-select {
   width: 100%;
   padding: 4px 6px;
-  border: 1px solid #d1d9e0;
+  border: 1px solid var(--fm-border, #e0e0e0);
   border-radius: 4px;
-  background: #fff;
+  background: var(--fm-input-bg, #fff);
+  color: inherit;
   font-size: 13px;
   cursor: pointer;
 }
 .fm-moscow-must .fm-td-feature,
-.fm-moscow-must .fm-td-moscow     { background: rgba(255, 0, 0, 0.06); }
+.fm-moscow-must .fm-td-moscow {
+  background: var(--fm-must-bg, rgba(255, 0, 0, 0.06));
+}
 .fm-moscow-should .fm-td-feature,
-.fm-moscow-should .fm-td-moscow   { background: rgba(255, 140, 0, 0.06); }
+.fm-moscow-should .fm-td-moscow {
+  background: var(--fm-should-bg, rgba(255, 140, 0, 0.06));
+}
 .fm-moscow-could .fm-td-feature,
-.fm-moscow-could .fm-td-moscow    { background: transparent; }
+.fm-moscow-could .fm-td-moscow {
+  background: var(--fm-could-bg, transparent);
+}
 .fm-moscow-wont .fm-td-feature,
-.fm-moscow-wont .fm-td-moscow     { background: rgba(0, 0, 0, 0.03); }
+.fm-moscow-wont .fm-td-moscow {
+  background: var(--fm-wont-bg, rgba(0, 0, 0, 0.03));
+}
 .fm-moscow-wont .fm-feature-label,
-.fm-moscow-wont .fm-feature-desc { opacity: 0.5; }
-.fm-th-option { min-width: 100px; text-align: center; }
+.fm-moscow-wont .fm-feature-desc {
+  opacity: 0.5;
+}
+.fm-th-option {
+  min-width: 100px;
+  text-align: center;
+}
 .fm-option-header {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
 }
-.fm-option-label { font-weight: 600; }
+.fm-option-label {
+  font-weight: 600;
+}
 .fm-option-score {
   font-size: 18px;
   font-weight: 700;
-  color: #0969da;
+  color: var(--fm-score-color, #1677ff);
 }
 .fm-score-bar {
   width: 100%;
   height: 4px;
-  background: #e8e8e8;
+  background: var(--fm-bar-bg, #e8e8e8);
   border-radius: 2px;
   overflow: hidden;
 }
 .fm-score-fill {
   height: 100%;
-  background: #0969da;
+  background: var(--fm-bar-fill, #1677ff);
   border-radius: 2px;
   transition: width 0.3s ease;
 }
@@ -199,31 +227,20 @@
   font-size: 13px;
   opacity: 0.8;
 }
-.fm-legend-item { white-space: nowrap; }
-</style><div id="feat-matrix-demo"></div><script type="module">
+.fm-legend-item {
+  white-space: nowrap;
+}
+/*# sourceMappingURL=index.css.map */</style><div id="feat-matrix-demo"></div><script type="module">
 import React from "https://esm.sh/react@19?dev";
 import ReactDOM from "https://esm.sh/react-dom@19/client?dev";
 
 const { useState, useMemo, createElement: h } = React;
 
-const SUPPORT_INFO = {
-  'ootb':          { label: 'Out of the Box',  emoji: '\u2705', score: 3 },
-  'configuration': { label: 'Configuration',   emoji: '\uD83D\uDD27', score: 2 },
-  'customization': { label: 'Customization',   emoji: '\uD83D\uDD28', score: 1 },
-  'not-supported': { label: 'Not Supported',   emoji: '\u274C', score: 0 },
-};
-
-const MOSCOW_INFO = {
-  'must':   { label: 'Must have',   short: 'M', weight: 8 },
-  'should': { label: 'Should have', short: 'S', weight: 4 },
-  'could':  { label: 'Could have',  short: 'C', weight: 2 },
-  'wont':   { label: "Won't have",  short: 'W', weight: 0 },
-};
-
-const MOSCOW_LEVELS = ['must', 'should', 'could', 'wont'];
-
+const SUPPORT_INFO = {"ootb":{"label":"Out of the Box","emoji":"✅","score":3},"configuration":{"label":"Configuration","emoji":"🔧","score":2},"customization":{"label":"Customization","emoji":"🔨","score":1},"not-supported":{"label":"Not Supported","emoji":"❌","score":0}};
+const MOSCOW_INFO = {"must":{"label":"Must have","short":"M","weight":8},"should":{"label":"Should have","short":"S","weight":4},"could":{"label":"Could have","short":"C","weight":2},"wont":{"label":"Won't have","short":"W","weight":0}};
+const MOSCOW_LEVELS = ["must","should","could","wont"];
 const MAX_SUPPORT_SCORE = 3;
-const MAX_CELL_SCORE = MOSCOW_INFO['must'].weight * MAX_SUPPORT_SCORE; // 24
+const MAX_CELL_SCORE = 24;
 
 function computeCellScore(weight, supportScore) {
   return weight * (MAX_SUPPORT_SCORE - supportScore);
