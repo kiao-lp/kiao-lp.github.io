@@ -93,6 +93,15 @@
     /* Bold & emphasis */
     strong { font-weight: 600; color: #1f2328; }
 
+    /* Floating logo */
+    .site-logo {
+      position: fixed;
+      top: 1.5em;
+      right: 1.5em;
+      z-index: 100;
+    }
+    .site-logo img { height: 40px; width: auto; display: block; }
+
     /* Responsive */
     @media (max-width: 768px) {
       body { padding: 1em; font-size: 14px; }
@@ -106,8 +115,11 @@
   </style>
 </head>
 <body>
+<a class="site-logo" href="https://www.kiao-lp.app/" title="Kiao">
+  <img src="https://www.kiao-lp.app/BrainK.jpg" alt="Kiao" />
+</a>
 <h1 id="technical-documentation">Technical documentation</h1>
 <h2 id="global-architecture"><a href="./global-architecture.html">Global architecture</a></h2>
-<h2 id="building-units-from-notes"><a href="./building-units-from-notes.html">Building units from notes</a></h2>
+<h2 id="publishing-units-from-notes"><a href="./publishing-units-from-notes.html">Publishing units from notes</a></h2>
 </body>
 </html>

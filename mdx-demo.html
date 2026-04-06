@@ -93,6 +93,15 @@
     /* Bold & emphasis */
     strong { font-weight: 600; color: #1f2328; }
 
+    /* Floating logo */
+    .site-logo {
+      position: fixed;
+      top: 1.5em;
+      right: 1.5em;
+      z-index: 100;
+    }
+    .site-logo img { height: 40px; width: auto; display: block; }
+
     /* Responsive */
     @media (max-width: 768px) {
       body { padding: 1em; font-size: 14px; }
@@ -106,6 +115,9 @@
   </style>
 </head>
 <body>
+<a class="site-logo" href="https://www.kiao-lp.app/" title="Kiao">
+  <img src="https://www.kiao-lp.app/BrainK.jpg" alt="Kiao" />
+</a>
 <h1>MDX Demo</h1>
 <p>This page is built with <strong>MDX</strong> — Markdown with JSX components.</p>
 <h2>Callout Examples</h2>

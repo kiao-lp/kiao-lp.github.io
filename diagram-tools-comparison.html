@@ -93,6 +93,15 @@
     /* Bold & emphasis */
     strong { font-weight: 600; color: #1f2328; }
 
+    /* Floating logo */
+    .site-logo {
+      position: fixed;
+      top: 1.5em;
+      right: 1.5em;
+      z-index: 100;
+    }
+    .site-logo img { height: 40px; width: auto; display: block; }
+
     /* Responsive */
     @media (max-width: 768px) {
       body { padding: 1em; font-size: 14px; }
@@ -106,6 +115,9 @@
   </style>
 </head>
 <body>
+<a class="site-logo" href="https://www.kiao-lp.app/" title="Kiao">
+  <img src="https://www.kiao-lp.app/BrainK.jpg" alt="Kiao" />
+</a>
 <h1>Diagram Tools Comparison</h1>
 <p>Compare popular diagram and modeling tools against features relevant to enterprise architecture, developer workflows, and collaboration.</p>
 <p>Set the <strong>priority</strong> for each feature to see which tools best fit your use case.</p>
