@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagram Tools Comparison</title>
+  <style>
+    /* Reset & base */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { font-size: 16px; line-height: 1.6; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      color: #1f2328;
+      background: #fff;
+      margin: 0;
+      padding: 2em;
+      max-width: 980px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Headings */
+    h1, h2, h3, h4, h5, h6 { margin-top: 1.5em; margin-bottom: 0.5em; font-weight: 600; color: #1f2328; }
+    h1 { font-size: 2em; padding-bottom: 0.3em; border-bottom: 1px solid #d1d9e0; }
+    h2 { font-size: 1.5em; padding-bottom: 0.3em; border-bottom: 1px solid #d1d9e0; }
+    h3 { font-size: 1.25em; }
+    h4 { font-size: 1em; }
+
+    /* Links */
+    a { color: #0969da; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Paragraphs & lists */
+    p { margin: 0 0 16px; }
+    ul, ol { padding-left: 2em; margin-bottom: 16px; }
+    li { margin-bottom: 4px; }
+
+    /* Code */
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.85em;
+      background: #f6f8fa;
+      border-radius: 6px;
+      padding: 0.2em 0.4em;
+    }
+    pre {
+      background: #f6f8fa;
+      border-radius: 6px;
+      padding: 16px;
+      overflow: auto;
+      line-height: 1.45;
+      margin-bottom: 16px;
+    }
+    pre code { background: none; padding: 0; font-size: 0.85em; }
+
+    /* Blockquotes */
+    blockquote {
+      margin: 0 0 16px;
+      padding: 0 1em;
+      color: #656d76;
+      border-left: 4px solid #d1d9e0;
+    }
+
+    /* Tables */
+    table { border-collapse: collapse; width: 100%; margin-bottom: 16px; }
+    th, td { border: 1px solid #d1d9e0; padding: 6px 13px; text-align: left; }
+    th { background: #f6f8fa; font-weight: 600; }
+    tr:nth-child(even) { background: #f6f8fa; }
+
+    /* Horizontal rules */
+    hr { border: none; border-top: 1px solid #d1d9e0; margin: 24px 0; }
+
+    /* Images & SVG */
+    img, svg { max-width: 100%; height: auto; }
+
+    /* Diagram containers */
+    .plantuml, .mermaid-diagram { text-align: center; margin: 16px 0; }
+
+    /* Callout components */
+    .callout {
+      border-radius: 6px;
+      border-left: 4px solid;
+      padding: 12px 16px;
+      margin: 16px 0;
+    }
+    .callout-title { font-weight: 600; margin-bottom: 4px; }
+    .callout-body > p:last-child { margin-bottom: 0; }
+    .callout-note    { border-color: #0969da; background: #ddf4ff; }
+    .callout-tip     { border-color: #1a7f37; background: #dafbe1; }
+    .callout-warning { border-color: #bf8700; background: #fff8c5; }
+    .callout-danger  { border-color: #cf222e; background: #ffebe9; }
+
+    /* Bold & emphasis */
+    strong { font-weight: 600; color: #1f2328; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body { padding: 1em; font-size: 14px; }
+    }
+
+    @media print {
+      body { max-width: none; padding: 0; }
+      h1, h2, h3, h4, h5, h6 { page-break-after: avoid; }
+      pre { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<h1>Diagram Tools Comparison</h1>
+<p>Compare popular diagram and modeling tools against features relevant to enterprise architecture, developer workflows, and collaboration.</p>
+<p>Set the <strong>priority</strong> for each feature to see which tools best fit your use case.</p>
+<div><style>/* src/components/FeatMatrix.css */
+.fm-container {
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  overflow-x: auto;
+}
+.fm-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-end;
+  padding: 4px 0;
+}
+.fm-req-selector {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+.fm-req-label {
+  font-size: 13px;
+  color: inherit;
+  white-space: nowrap;
+  opacity: 0.7;
+}
+.fm-req-select {
+  padding: 3px 6px;
+  border: 1px solid var(--fm-border, #e0e0e0);
+  border-radius: 4px;
+  background: var(--fm-input-bg, #fff);
+  color: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.fm-req-desc {
+  font-size: 12px;
+  opacity: 0.6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fm-export-btn {
+  padding: 4px 12px;
+  border: 1px solid var(--fm-border, #e0e0e0);
+  border-radius: 4px;
+  background: var(--fm-input-bg, #fff);
+  color: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.fm-export-btn:hover {
+  background: var(--fm-header-bg, #f5f5f5);
+}
+.fm-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.fm-table th,
+.fm-table td {
+  padding: 8px 12px;
+  border: 1px solid var(--fm-border, #e0e0e0);
+  text-align: left;
+  vertical-align: top;
+}
+.fm-table thead th {
+  background: var(--fm-header-bg, #f5f5f5);
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.fm-th-feature {
+  min-width: 180px;
+}
+.fm-td-feature {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.fm-feature-label {
+  font-weight: 500;
+}
+.fm-feature-desc {
+  font-size: 12px;
+  opacity: 0.7;
+}
+.fm-th-moscow {
+  min-width: 120px;
+}
+.fm-moscow-select {
+  width: 100%;
+  padding: 4px 6px;
+  border: 1px solid var(--fm-border, #e0e0e0);
+  border-radius: 4px;
+  background: var(--fm-input-bg, #fff);
+  color: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.fm-moscow-must .fm-td-feature,
+.fm-moscow-must .fm-td-moscow {
+  background: var(--fm-must-bg, rgba(255, 0, 0, 0.06));
+}
+.fm-moscow-should .fm-td-feature,
+.fm-moscow-should .fm-td-moscow {
+  background: var(--fm-should-bg, rgba(255, 140, 0, 0.06));
+}
+.fm-moscow-could .fm-td-feature,
+.fm-moscow-could .fm-td-moscow {
+  background: var(--fm-could-bg, transparent);
+}
+.fm-moscow-wont .fm-td-feature,
+.fm-moscow-wont .fm-td-moscow {
+  background: var(--fm-wont-bg, rgba(0, 0, 0, 0.03));
+}
+.fm-moscow-wont .fm-feature-label,
+.fm-moscow-wont .fm-feature-desc {
+  opacity: 0.5;
+}
+.fm-th-option {
+  min-width: 100px;
+  text-align: center;
+}
+.fm-option-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.fm-option-label {
+  font-weight: 600;
+}
+.fm-option-score {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--fm-score-color, #1677ff);
+}
+.fm-score-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--fm-bar-bg, #e8e8e8);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.fm-score-fill {
+  height: 100%;
+  background: var(--fm-bar-fill, #1677ff);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+.fm-td-support {
+  text-align: center;
+  font-size: 16px;
+  position: relative;
+}
+.fm-has-comment::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-style: solid;
+  border-width: 0 8px 8px 0;
+  border-color: transparent var(--fm-comment-indicator, rgba(0, 120, 215, 0.6)) transparent transparent;
+  pointer-events: none;
+}
+.fm-tooltip {
+  display: none;
+  position: absolute;
+  z-index: 20;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 300px;
+  padding: 8px 12px;
+  margin-top: 4px;
+  background: var(--fm-tooltip-bg, #fff);
+  border: 1px solid var(--fm-tooltip-border, #ccc);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: left;
+  color: var(--fm-tooltip-color, #333);
+  white-space: normal;
+  pointer-events: none;
+}
+.fm-has-comment:hover .fm-tooltip {
+  display: block;
+}
+.fm-tooltip p {
+  margin: 0 0 6px 0;
+}
+.fm-tooltip p:last-child {
+  margin-bottom: 0;
+}
+.fm-tooltip h1,
+.fm-tooltip h2,
+.fm-tooltip h3,
+.fm-tooltip h4,
+.fm-tooltip h5,
+.fm-tooltip h6 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+.fm-tooltip ul,
+.fm-tooltip ol {
+  margin: 0 0 6px 0;
+  padding-left: 18px;
+}
+.fm-tooltip code {
+  background: var(--fm-tooltip-code-bg, rgba(0, 0, 0, 0.06));
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-family:
+    "JetBrains Mono",
+    "Fira Code",
+    monospace;
+  font-size: 12px;
+}
+.fm-tooltip a {
+  color: var(--fm-score-color, #1677ff);
+  text-decoration: none;
+}
+.fm-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 12px 0;
+  font-size: 13px;
+  opacity: 0.8;
+}
+.fm-legend-item {
+  white-space: nowrap;
+}
+/*# sourceMappingURL=index.css.map */</style><div id="feat-matrix-demo"></div><script type="module">
+import React from "https://esm.sh/react@19?dev";
+import ReactDOM from "https://esm.sh/react-dom@19/client?dev";
+
+const { useState, useMemo, createElement: h } = React;
+
+const SUPPORT_INFO = {"ootb":{"label":"Out of the Box","emoji":"✅","score":3},"configuration":{"label":"Configuration","emoji":"🔧","score":2},"customization":{"label":"Customization","emoji":"🔨","score":1},"not-supported":{"label":"Not Supported","emoji":"❌","score":0}};
+const MOSCOW_INFO = {"must":{"label":"Must","short":"M","weight":8},"should":{"label":"Should","short":"S","weight":4},"could":{"label":"Could","short":"C","weight":2},"wont":{"label":"Won't","short":"W","weight":0}};
+const MOSCOW_LEVELS = ["must","should","could","wont"];
+const MAX_SUPPORT_SCORE = 3;
+const MAX_CELL_SCORE = 24;
+
+function computeCellScore(weight, supportScore) {
+  return weight * (MAX_SUPPORT_SCORE - supportScore);
+}
+
+function cellBackground(cellScore) {
+  const alpha = (cellScore / MAX_CELL_SCORE) * 0.4;
+  return "rgba(220, 80, 80, " + alpha.toFixed(3) + ")";
+}
+
+function computeScore(option, features, moscow) {
+  let score = 0;
+  for (const f of features) {
+    const weight = MOSCOW_INFO[moscow[f.id] || 'could'].weight;
+    const sup = option.support[f.id];
+    score += weight * (sup ? SUPPORT_INFO[sup].score : 0);
+  }
+  return score;
+}
+
+function FeatMatrix({ features, options, requirements }) {
+  const firstReq = requirements?.[0] ?? null;
+
+  const [selectedReqId, setSelectedReqId] = useState(() => firstReq?.id ?? null);
+  const [moscow, setMoscow] = useState(() => {
+    const init = {};
+    for (const f of features) init[f.id] = firstReq?.weights[f.id] ?? 'could';
+    return init;
+  });
+
+  const handleMoscowChange = (featureId, level) => {
+    setSelectedReqId(null);
+    setMoscow(prev => ({ ...prev, [featureId]: level }));
+  };
+
+  const handleRequirementChange = (reqId) => {
+    setSelectedReqId(reqId);
+    const req = requirements?.find(r => r.id === reqId) ?? null;
+    const newMoscow = {};
+    for (const f of features) newMoscow[f.id] = req?.weights[f.id] ?? 'could';
+    setMoscow(newMoscow);
+  };
+
+  const scored = useMemo(() =>
+    options
+      .map(opt => ({ option: opt, score: computeScore(opt, features, moscow) }))
+      .sort((a, b) => b.score - a.score),
+    [options, features, moscow]
+  );
+
+  const maxScore = useMemo(() => Math.max(1, ...scored.map(s => s.score)), [scored]);
+
+  const sorted = useMemo(() =>
+    [...features].sort((a, b) =>
+      MOSCOW_INFO[moscow[b.id] || 'could'].weight - MOSCOW_INFO[moscow[a.id] || 'could'].weight
+    ),
+    [features, moscow]
+  );
+
+  const selectedReq = selectedReqId ? requirements?.find(r => r.id === selectedReqId) : null;
+
+  return h("div", { className: "fm-container" },
+    requirements && requirements.length > 0 && h("div", { className: "fm-toolbar" },
+      h("div", { className: "fm-req-selector" },
+        h("label", { className: "fm-req-label" }, "Requirements"),
+        h("select", {
+          className: "fm-req-select",
+          value: selectedReqId ?? "",
+          onChange: e => handleRequirementChange(e.target.value || null),
+        },
+          ...requirements.map(req =>
+            h("option", { key: req.id, value: req.id }, req.label)
+          ),
+          h("option", { value: "" }, "Custom")
+        ),
+        selectedReq?.description ? h("span", { className: "fm-req-desc" }, selectedReq.description) : null
+      )
+    ),
+    h("table", { className: "fm-table" },
+      h("thead", null,
+        h("tr", null,
+          h("th", { className: "fm-th-feature" }, "Feature"),
+          h("th", { className: "fm-th-moscow" }, "Priority"),
+          ...scored.map(({ option, score }) =>
+            h("th", { key: option.id, className: "fm-th-option" },
+              h("div", { className: "fm-option-header" },
+                h("span", { className: "fm-option-label" }, option.label),
+                h("span", { className: "fm-option-score" }, score),
+                h("div", { className: "fm-score-bar" },
+                  h("div", { className: "fm-score-fill", style: { width: (score / maxScore * 100) + "%" } })
+                )
+              )
+            )
+          )
+        )
+      ),
+      h("tbody", null,
+        ...sorted.map(feature =>
+          h("tr", { key: feature.id, className: "fm-row fm-moscow-" + (moscow[feature.id] || "could") },
+            h("td", { className: "fm-td-feature" },
+              h("span", { className: "fm-feature-label" }, feature.label),
+              feature.description ? h("span", { className: "fm-feature-desc" }, feature.description) : null
+            ),
+            h("td", { className: "fm-td-moscow" },
+              h("select", {
+                className: "fm-moscow-select",
+                value: moscow[feature.id] || "could",
+                onChange: e => handleMoscowChange(feature.id, e.target.value),
+              },
+                ...MOSCOW_LEVELS.map(level =>
+                  h("option", { key: level, value: level },
+                    MOSCOW_INFO[level].short + " - " + MOSCOW_INFO[level].label
+                  )
+                )
+              )
+            ),
+            ...scored.map(({ option }) => {
+              const sup = option.support[feature.id];
+              const info = sup ? SUPPORT_INFO[sup] : undefined;
+              const weight = MOSCOW_INFO[moscow[feature.id] || 'could'].weight;
+              const supScore = info ? info.score : 0;
+              const cs = computeCellScore(weight, supScore);
+              return h("td", {
+                key: option.id,
+                className: "fm-td-support " + (sup ? "fm-support-" + sup : "fm-support-unknown"),
+                title: info ? info.label : undefined,
+                style: { backgroundColor: cellBackground(cs) },
+              }, info ? info.emoji : "\u2014");
+            })
+          )
+        )
+      )
+    ),
+    h("div", { className: "fm-legend" },
+      ...Object.entries(SUPPORT_INFO).map(([key, { label, emoji }]) =>
+        h("span", { key, className: "fm-legend-item" }, emoji + " " + label)
+      )
+    )
+  );
+}
+
+const data = {"features":[{"id":"llm_native","label":"Native LLM Support","description":"The format appears extensively in LLM training data, operates at a text abstraction level optimal for LLMs, and requires no spatial reasoning to generate."},{"id":"diagram_as_text","label":"Diagram as Text","description":"Diagrams are authored in a human-readable text/DSL format (not a binary or opaque XML blob)."},{"id":"visual_edition","label":"Visual Edition","description":"Provides a GUI canvas with drag-and-drop editing."},{"id":"automated_layout","label":"Automated Layout","description":"A layout engine automatically arranges diagram elements (e.g. Graphviz, ELK, Dagre)."},{"id":"manual_layout","label":"Manual Layout","description":"Users can manually position diagram elements on the canvas."},{"id":"free_non_commercial","label":"Free for Non-Commercial Use","description":"A permanent free tier exists for personal or non-commercial use (not just a time-limited trial)."},{"id":"free_non_profit","label":"Free for Non-Profit Orgs","description":"Explicitly offers free or substantially discounted plans for registered non-profit organizations."},{"id":"free_commercial","label":"Free for Commercial Use","description":"A permanent free tier usable in a commercial context (not just a trial or a severely crippled plan)."},{"id":"confluence_embed","label":"Embeddable in Confluence","description":"Has an official Confluence plugin or a well-supported integration in the Atlassian Marketplace."},{"id":"markdown_embed","label":"Embeddable in Markdown","description":"Diagrams can be rendered inline in Markdown on major platforms (GitHub, GitLab, MkDocs, Obsidian, etc.) without manual export."},{"id":"saas","label":"Available as SaaS","description":"A cloud-hosted version is available (no local installation required)."},{"id":"self_hostable","label":"Self-Hostable","description":"Can be deployed on-premise or on a private server (Docker, JAR, desktop app, etc.)."},{"id":"class_diagram","label":"Class Diagram","description":"Supports UML Class diagrams with classes, attributes, methods, and relationships."},{"id":"use_case_diagram","label":"Use Case Diagram","description":"Supports UML Use Case diagrams with actors, use cases, and system boundaries."},{"id":"sequence_diagram","label":"Sequence Diagram","description":"Supports UML Sequence diagrams with lifelines, messages, and activation boxes."},{"id":"realtime_collab","label":"Real-time Collaboration","description":"Multiple users can edit the same diagram simultaneously with live cursors and conflict resolution."},{"id":"versioning","label":"Versioning","description":"Supports version history — either built-in revision tracking or first-class Git integration."},{"id":"diagram_links","label":"Links Between Diagrams","description":"Supports clickable navigation links or hyperlinks between diagrams within the same model or workspace."},{"id":"togaf","label":"TOGAF Compliant","description":"Natively supports TOGAF notation, ADM phases, viewpoints, or metamodel — not just generic shapes."},{"id":"c4_support","label":"C4 Model Support","description":"Supports the C4 model (Context, Container, Component, Code) with dedicated notation or stdlib."},{"id":"strategy_diagram","label":"Strategy Diagram","description":"Supports ArchiMate Strategy layer: capabilities, courses of action, resources, and value streams."},{"id":"motivation_diagram","label":"Motivation Diagram","description":"Supports ArchiMate Motivation viewpoint: goals, drivers, assessments, principles, requirements, constraints, outcomes."},{"id":"business_layer","label":"Business Layer Diagram","description":"Supports ArchiMate Business layer: business processes, actors, roles, functions, and services."},{"id":"application_layer","label":"Application Layer Diagram","description":"Supports ArchiMate Application layer: application components, interfaces, services, and data objects."},{"id":"technology_layer","label":"Technology Layer Diagram","description":"Supports ArchiMate Technology layer: infrastructure nodes, networks, communication paths, and physical resources."},{"id":"layered_diagram","label":"Layered Diagram","description":"Supports combining elements from multiple ArchiMate layers (Strategy, Business, Application, Technology) in a single cross-layer view."},{"id":"impl_migration","label":"Implementation & Migration Diagram","description":"Supports ArchiMate Implementation & Migration layer: work packages, deliverables, gaps, plateaus, and transition architectures."},{"id":"bpmn","label":"BPMN","description":"Supports Business Process Model and Notation (BPMN 2.0) with events, tasks, gateways, lanes, and pools."}],"options":[{"id":"visual_paradigm","label":"Visual Paradigm","support":{"llm_native":"customization","diagram_as_text":"customization","visual_edition":"ootb","automated_layout":"ootb","manual_layout":"ootb","free_non_commercial":"ootb","free_non_profit":"ootb","free_commercial":"not-supported","confluence_embed":"ootb","markdown_embed":"not-supported","saas":"ootb","self_hostable":"ootb","class_diagram":"ootb","use_case_diagram":"ootb","sequence_diagram":"ootb","realtime_collab":"ootb","versioning":"ootb","diagram_links":"ootb","togaf":"ootb","c4_support":"ootb","strategy_diagram":"ootb","motivation_diagram":"ootb","business_layer":"ootb","application_layer":"ootb","technology_layer":"ootb","layered_diagram":"ootb","impl_migration":"ootb","bpmn":"ootb"}},{"id":"plantuml","label":"PlantUML","support":{"llm_native":"ootb","diagram_as_text":"ootb","visual_edition":"not-supported","automated_layout":"ootb","manual_layout":"not-supported","free_non_commercial":"ootb","free_non_profit":"ootb","free_commercial":"ootb","confluence_embed":"ootb","markdown_embed":"configuration","saas":"ootb","self_hostable":"ootb","class_diagram":"ootb","use_case_diagram":"ootb","sequence_diagram":"ootb","realtime_collab":"not-supported","versioning":"ootb","diagram_links":"not-supported","togaf":"not-supported","c4_support":"ootb","strategy_diagram":"not-supported","motivation_diagram":"not-supported","business_layer":"customization","application_layer":"customization","technology_layer":"customization","layered_diagram":"customization","impl_migration":"not-supported","bpmn":"ootb"}},{"id":"drawio","label":"diagrams.net (draw.io)","support":{"llm_native":"not-supported","diagram_as_text":"configuration","visual_edition":"ootb","automated_layout":"ootb","manual_layout":"ootb","free_non_commercial":"ootb","free_non_profit":"ootb","free_commercial":"ootb","confluence_embed":"ootb","markdown_embed":"customization","saas":"ootb","self_hostable":"ootb","class_diagram":"ootb","use_case_diagram":"ootb","sequence_diagram":"ootb","realtime_collab":"ootb","versioning":"ootb","diagram_links":"ootb","togaf":"configuration","c4_support":"ootb","strategy_diagram":"configuration","motivation_diagram":"configuration","business_layer":"configuration","application_layer":"configuration","technology_layer":"configuration","layered_diagram":"configuration","impl_migration":"configuration","bpmn":"ootb"}},{"id":"lucidchart","label":"Lucidchart","support":{"llm_native":"not-supported","diagram_as_text":"not-supported","visual_edition":"ootb","automated_layout":"ootb","manual_layout":"ootb","free_non_commercial":"configuration","free_non_profit":"not-supported","free_commercial":"not-supported","confluence_embed":"ootb","markdown_embed":"not-supported","saas":"ootb","self_hostable":"not-supported","class_diagram":"ootb","use_case_diagram":"ootb","sequence_diagram":"ootb","realtime_collab":"ootb","versioning":"ootb","diagram_links":"ootb","togaf":"configuration","c4_support":"ootb","strategy_diagram":"customization","motivation_diagram":"customization","business_layer":"customization","application_layer":"customization","technology_layer":"customization","layered_diagram":"not-supported","impl_migration":"not-supported","bpmn":"ootb"}},{"id":"archi","label":"Archi","support":{"llm_native":"not-supported","diagram_as_text":"customization","visual_edition":"ootb","automated_layout":"ootb","manual_layout":"ootb","free_non_commercial":"ootb","free_non_profit":"ootb","free_commercial":"ootb","confluence_embed":"customization","markdown_embed":"not-supported","saas":"not-supported","self_hostable":"ootb","class_diagram":"not-supported","use_case_diagram":"not-supported","sequence_diagram":"not-supported","realtime_collab":"not-supported","versioning":"ootb","diagram_links":"ootb","togaf":"ootb","c4_support":"not-supported","strategy_diagram":"ootb","motivation_diagram":"ootb","business_layer":"ootb","application_layer":"ootb","technology_layer":"ootb","layered_diagram":"ootb","impl_migration":"ootb","bpmn":"not-supported"}},{"id":"yed","label":"yEd Graph Editor","support":{"llm_native":"not-supported","diagram_as_text":"customization","visual_edition":"ootb","automated_layout":"ootb","manual_layout":"ootb","free_non_commercial":"ootb","free_non_profit":"ootb","free_commercial":"ootb","confluence_embed":"configuration","markdown_embed":"not-supported","saas":"configuration","self_hostable":"ootb","class_diagram":"ootb","use_case_diagram":"ootb","sequence_diagram":"not-supported","realtime_collab":"not-supported","versioning":"not-supported","diagram_links":"not-supported","togaf":"not-supported","c4_support":"not-supported","strategy_diagram":"not-supported","motivation_diagram":"not-supported","business_layer":"not-supported","application_layer":"not-supported","technology_layer":"not-supported","layered_diagram":"not-supported","impl_migration":"not-supported","bpmn":"ootb"}},{"id":"enterprise_architect","label":"Enterprise Architect (Sparx)","support":{"llm_native":"not-supported","diagram_as_text":"customization","visual_edition":"ootb","automated_layout":"ootb","manual_layout":"ootb","free_non_commercial":"customization","free_non_profit":"not-supported","free_commercial":"not-supported","confluence_embed":"configuration","markdown_embed":"not-supported","saas":"ootb","self_hostable":"ootb","class_diagram":"ootb","use_case_diagram":"ootb","sequence_diagram":"ootb","realtime_collab":"ootb","versioning":"ootb","diagram_links":"ootb","togaf":"ootb","c4_support":"ootb","strategy_diagram":"ootb","motivation_diagram":"ootb","business_layer":"ootb","application_layer":"ootb","technology_layer":"ootb","layered_diagram":"ootb","impl_migration":"ootb","bpmn":"ootb"}},{"id":"bizzdesign","label":"Bizzdesign Enterprise Studio","support":{"llm_native":"not-supported","diagram_as_text":"not-supported","visual_edition":"ootb","automated_layout":"ootb","manual_layout":"ootb","free_non_commercial":"not-supported","free_non_profit":"not-supported","free_commercial":"not-supported","confluence_embed":"ootb","markdown_embed":"not-supported","saas":"ootb","self_hostable":"ootb","class_diagram":"ootb","use_case_diagram":"ootb","sequence_diagram":"ootb","realtime_collab":"ootb","versioning":"ootb","diagram_links":"ootb","togaf":"ootb","c4_support":"not-supported","strategy_diagram":"ootb","motivation_diagram":"ootb","business_layer":"ootb","application_layer":"ootb","technology_layer":"ootb","layered_diagram":"ootb","impl_migration":"ootb","bpmn":"ootb"}},{"id":"orbus","label":"OrbusInfinity","support":{"llm_native":"not-supported","diagram_as_text":"not-supported","visual_edition":"ootb","automated_layout":"ootb","manual_layout":"ootb","free_non_commercial":"not-supported","free_non_profit":"not-supported","free_commercial":"not-supported","confluence_embed":"customization","markdown_embed":"not-supported","saas":"ootb","self_hostable":"not-supported","class_diagram":"ootb","use_case_diagram":"ootb","sequence_diagram":"ootb","realtime_collab":"ootb","versioning":"ootb","diagram_links":"ootb","togaf":"ootb","c4_support":"not-supported","strategy_diagram":"ootb","motivation_diagram":"ootb","business_layer":"ootb","application_layer":"ootb","technology_layer":"ootb","layered_diagram":"ootb","impl_migration":"ootb","bpmn":"ootb"}},{"id":"bluedolphin","label":"BlueDolphin (ValueBlue)","support":{"llm_native":"not-supported","diagram_as_text":"not-supported","visual_edition":"ootb","automated_layout":"ootb","manual_layout":"ootb","free_non_commercial":"not-supported","free_non_profit":"not-supported","free_commercial":"not-supported","confluence_embed":"customization","markdown_embed":"not-supported","saas":"ootb","self_hostable":"not-supported","class_diagram":"not-supported","use_case_diagram":"not-supported","sequence_diagram":"not-supported","realtime_collab":"ootb","versioning":"ootb","diagram_links":"ootb","togaf":"ootb","c4_support":"not-supported","strategy_diagram":"ootb","motivation_diagram":"ootb","business_layer":"ootb","application_layer":"ootb","technology_layer":"ootb","layered_diagram":"ootb","impl_migration":"ootb","bpmn":"ootb"}},{"id":"icepanel","label":"IcePanel","support":{"llm_native":"not-supported","diagram_as_text":"configuration","visual_edition":"ootb","automated_layout":"ootb","manual_layout":"ootb","free_non_commercial":"ootb","free_non_profit":"configuration","free_commercial":"ootb","confluence_embed":"not-supported","markdown_embed":"not-supported","saas":"ootb","self_hostable":"not-supported","class_diagram":"not-supported","use_case_diagram":"not-supported","sequence_diagram":"not-supported","realtime_collab":"ootb","versioning":"ootb","diagram_links":"ootb","togaf":"not-supported","c4_support":"ootb","strategy_diagram":"not-supported","motivation_diagram":"not-supported","business_layer":"not-supported","application_layer":"not-supported","technology_layer":"not-supported","layered_diagram":"not-supported","impl_migration":"not-supported","bpmn":"not-supported"}},{"id":"miro","label":"Miro","support":{"llm_native":"not-supported","diagram_as_text":"not-supported","visual_edition":"ootb","automated_layout":"configuration","manual_layout":"ootb","free_non_commercial":"ootb","free_non_profit":"not-supported","free_commercial":"ootb","confluence_embed":"ootb","markdown_embed":"not-supported","saas":"ootb","self_hostable":"not-supported","class_diagram":"configuration","use_case_diagram":"configuration","sequence_diagram":"configuration","realtime_collab":"ootb","versioning":"configuration","diagram_links":"ootb","togaf":"not-supported","c4_support":"customization","strategy_diagram":"not-supported","motivation_diagram":"not-supported","business_layer":"not-supported","application_layer":"not-supported","technology_layer":"not-supported","layered_diagram":"not-supported","impl_migration":"not-supported","bpmn":"ootb"}},{"id":"mermaid","label":"Mermaid","support":{"llm_native":"ootb","diagram_as_text":"ootb","visual_edition":"configuration","automated_layout":"ootb","manual_layout":"not-supported","free_non_commercial":"ootb","free_non_profit":"ootb","free_commercial":"ootb","confluence_embed":"ootb","markdown_embed":"ootb","saas":"ootb","self_hostable":"ootb","class_diagram":"ootb","use_case_diagram":"not-supported","sequence_diagram":"ootb","realtime_collab":"configuration","versioning":"ootb","diagram_links":"not-supported","togaf":"not-supported","c4_support":"ootb","strategy_diagram":"not-supported","motivation_diagram":"not-supported","business_layer":"not-supported","application_layer":"not-supported","technology_layer":"not-supported","layered_diagram":"not-supported","impl_migration":"not-supported","bpmn":"not-supported"}},{"id":"structurizr","label":"Structurizr","support":{"llm_native":"ootb","diagram_as_text":"ootb","visual_edition":"ootb","automated_layout":"ootb","manual_layout":"ootb","free_non_commercial":"ootb","free_non_profit":"ootb","free_commercial":"ootb","confluence_embed":"ootb","markdown_embed":"customization","saas":"customization","self_hostable":"ootb","class_diagram":"not-supported","use_case_diagram":"not-supported","sequence_diagram":"not-supported","realtime_collab":"not-supported","versioning":"ootb","diagram_links":"ootb","togaf":"not-supported","c4_support":"ootb","strategy_diagram":"not-supported","motivation_diagram":"not-supported","business_layer":"not-supported","application_layer":"not-supported","technology_layer":"not-supported","layered_diagram":"not-supported","impl_migration":"not-supported","bpmn":"not-supported"}},{"id":"excalidraw","label":"Excalidraw","support":{"llm_native":"not-supported","diagram_as_text":"not-supported","visual_edition":"ootb","automated_layout":"not-supported","manual_layout":"ootb","free_non_commercial":"ootb","free_non_profit":"ootb","free_commercial":"ootb","confluence_embed":"ootb","markdown_embed":"not-supported","saas":"ootb","self_hostable":"ootb","class_diagram":"customization","use_case_diagram":"customization","sequence_diagram":"customization","realtime_collab":"ootb","versioning":"configuration","diagram_links":"not-supported","togaf":"not-supported","c4_support":"not-supported","strategy_diagram":"not-supported","motivation_diagram":"not-supported","business_layer":"not-supported","application_layer":"not-supported","technology_layer":"not-supported","layered_diagram":"not-supported","impl_migration":"not-supported","bpmn":"not-supported"}},{"id":"eraser","label":"Eraser.io","support":{"llm_native":"ootb","diagram_as_text":"ootb","visual_edition":"ootb","automated_layout":"ootb","manual_layout":"ootb","free_non_commercial":"ootb","free_non_profit":"not-supported","free_commercial":"customization","confluence_embed":"ootb","markdown_embed":"configuration","saas":"ootb","self_hostable":"not-supported","class_diagram":"not-supported","use_case_diagram":"not-supported","sequence_diagram":"ootb","realtime_collab":"ootb","versioning":"ootb","diagram_links":"configuration","togaf":"not-supported","c4_support":"customization","strategy_diagram":"not-supported","motivation_diagram":"not-supported","business_layer":"not-supported","application_layer":"not-supported","technology_layer":"not-supported","layered_diagram":"not-supported","impl_migration":"not-supported","bpmn":"ootb"}},{"id":"d2","label":"D2 (Terrastruct)","support":{"llm_native":"ootb","diagram_as_text":"ootb","visual_edition":"configuration","automated_layout":"ootb","manual_layout":"not-supported","free_non_commercial":"ootb","free_non_profit":"ootb","free_commercial":"ootb","confluence_embed":"customization","markdown_embed":"configuration","saas":"ootb","self_hostable":"ootb","class_diagram":"ootb","use_case_diagram":"customization","sequence_diagram":"ootb","realtime_collab":"not-supported","versioning":"ootb","diagram_links":"not-supported","togaf":"not-supported","c4_support":"customization","strategy_diagram":"not-supported","motivation_diagram":"not-supported","business_layer":"not-supported","application_layer":"not-supported","technology_layer":"not-supported","layered_diagram":"not-supported","impl_migration":"not-supported","bpmn":"not-supported"}}],"requirements":[{"id":"llm_driven","label":"LLM-Driven Team","description":"AI-assisted diagramming: LLMs generate and edit diagrams from natural language","weights":{"llm_native":"must","diagram_as_text":"must","markdown_embed":"must","automated_layout":"should","free_commercial":"should","sequence_diagram":"should","class_diagram":"should","c4_support":"should","versioning":"should","self_hostable":"could","saas":"could","confluence_embed":"could","visual_edition":"could","manual_layout":"could","realtime_collab":"could","diagram_links":"could","use_case_diagram":"could","bpmn":"could","free_non_commercial":"could","free_non_profit":"wont","togaf":"wont","strategy_diagram":"wont","motivation_diagram":"wont","business_layer":"wont","application_layer":"wont","technology_layer":"wont","layered_diagram":"wont","impl_migration":"wont"}},{"id":"enterprise_arch","label":"Enterprise Architecture","description":"TOGAF/ArchiMate-focused EA team with governance and traceability needs","weights":{"togaf":"must","strategy_diagram":"must","motivation_diagram":"must","business_layer":"must","application_layer":"must","technology_layer":"must","layered_diagram":"must","impl_migration":"must","diagram_links":"must","versioning":"must","visual_edition":"must","bpmn":"should","realtime_collab":"should","confluence_embed":"should","self_hostable":"should","use_case_diagram":"should","sequence_diagram":"should","c4_support":"could","class_diagram":"could","saas":"could","manual_layout":"could","automated_layout":"could","diagram_as_text":"could","markdown_embed":"could","free_non_profit":"could","free_commercial":"wont","free_non_commercial":"wont","llm_native":"wont"}},{"id":"dev_team","label":"Development Team","description":"Software engineering team needing lightweight, code-friendly diagrams in their workflow","weights":{"diagram_as_text":"must","markdown_embed":"must","free_commercial":"must","versioning":"must","sequence_diagram":"must","class_diagram":"must","c4_support":"should","llm_native":"should","automated_layout":"should","confluence_embed":"should","saas":"should","realtime_collab":"could","self_hostable":"could","visual_edition":"could","diagram_links":"could","use_case_diagram":"could","bpmn":"could","free_non_commercial":"could","manual_layout":"could","free_non_profit":"wont","togaf":"wont","strategy_diagram":"wont","motivation_diagram":"wont","business_layer":"wont","application_layer":"wont","technology_layer":"wont","layered_diagram":"wont","impl_migration":"wont"}}]};
+const root = ReactDOM.createRoot(document.getElementById("feat-matrix-demo"));
+root.render(h(FeatMatrix, data));
+</script></div>
+<h2>How it works</h2>
+<ol>
+<li>Set the <strong>priority</strong> (MoSCoW) for each feature using the dropdown in the Priority column</li>
+<li>Tools are automatically <strong>scored and reordered</strong> — best match first</li>
+<li>Features are sorted by priority — Must-haves appear at the top</li>
+</ol>
+<h3>Scoring</h3>
+<p>Each feature contributes <code>moscow_weight × support_score</code> to a tool&#x27;s total:</p>
+<table><thead><tr><th>MoSCoW</th><th>Weight</th><th>Support Level</th><th>Score</th></tr></thead><tbody><tr><td>Must</td><td>8</td><td>Out of the Box</td><td>3</td></tr><tr><td>Should</td><td>4</td><td>Configuration</td><td>2</td></tr><tr><td>Could</td><td>2</td><td>Customization</td><td>1</td></tr><tr><td>Won&#x27;t</td><td>0</td><td>Not Supported</td><td>0</td></tr></tbody></table>
+</body>
+</html>
