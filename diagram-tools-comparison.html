@@ -102,6 +102,15 @@
     }
     .site-logo img { height: 40px; width: auto; display: block; }
 
+    /* Full-width breakout for wide components */
+    .full-width-breakout {
+      width: 100vw;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 0 3em;
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
       body { padding: 1em; font-size: 14px; }
@@ -120,14 +129,17 @@
 </a>
 <h1>Diagram Tools Comparison</h1>
 <p>Compare popular diagram and modeling tools against features relevant to enterprise architecture, developer workflows, and collaboration.</p>
-<p>Set the <strong>priority</strong> for each feature to see which tools best fit your use case.</p>
 <div><style>/* src/components/FeatMatrix.css */
 .fm-container {
   font-family:
     system-ui,
     -apple-system,
     sans-serif;
+  margin: 1.5em 0;
+}
+.fm-table-wrap {
   overflow-x: auto;
+  overflow-y: clip;
 }
 .fm-toolbar {
   display: flex;
@@ -175,6 +187,36 @@
 }
 .fm-export-btn:hover {
   background: var(--fm-header-bg, #f5f5f5);
+}
+.fm-help {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid var(--fm-border, #e0e0e0);
+  background: var(--fm-input-bg, #fff);
+  color: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: help;
+  user-select: none;
+  opacity: 0.7;
+}
+.fm-help:hover,
+.fm-help:focus {
+  opacity: 1;
+  outline: none;
+}
+.fm-help .fm-help-tooltip {
+  display: none;
+}
+.fm-help:hover .fm-help-tooltip,
+.fm-help:focus .fm-help-tooltip {
+  display: block;
 }
 .fm-table {
   width: 100%;
@@ -352,6 +394,30 @@
   color: var(--fm-score-color, #1677ff);
   text-decoration: none;
 }
+.fm-tooltip.fm-help-tooltip {
+  top: 100%;
+  left: auto;
+  right: 0;
+  transform: none;
+  margin-top: 6px;
+  max-width: 420px;
+  width: max-content;
+}
+.fm-tooltip.fm-help-tooltip table {
+  border-collapse: collapse;
+  margin: 4px 0;
+  font-size: 12px;
+}
+.fm-tooltip.fm-help-tooltip th,
+.fm-tooltip.fm-help-tooltip td {
+  border: 1px solid var(--fm-border, #e0e0e0);
+  padding: 3px 8px;
+  text-align: left;
+}
+.fm-tooltip.fm-help-tooltip th {
+  background: var(--fm-header-bg, #f5f5f5);
+  font-weight: 600;
+}
 .fm-legend {
   display: flex;
   flex-wrap: wrap;
@@ -374,6 +440,7 @@ const MOSCOW_INFO = {"must":{"label":"Must","short":"M","weight":8},"should":{"l
 const MOSCOW_LEVELS = ["must","should","could","wont"];
 const MAX_SUPPORT_SCORE = 3;
 const MAX_CELL_SCORE = 24;
+const HELP_HTML = "<p>Set the <strong>priority</strong> for each feature to see which tools best fit your use case.</p><h2>How it works</h2><ol><li>Set the <strong>priority</strong> (MoSCoW) for each feature using the dropdown in the Priority column</li><li>Tools are automatically <strong>scored and reordered</strong> — best match first</li><li>Features are sorted by priority — Must-haves appear at the top</li></ol><h3>Scoring</h3><p>Each feature contributes <code>moscow_weight × support_score</code> to a tool's total:</p><table><thead><tr><th>MoSCoW</th><th>Weight</th><th>Support Level</th><th>Score</th></tr></thead><tbody><tr><td>Must</td><td>8</td><td>Out of the Box</td><td>3</td></tr><tr><td>Should</td><td>4</td><td>Configuration</td><td>2</td></tr><tr><td>Could</td><td>2</td><td>Customization</td><td>1</td></tr><tr><td>Won't</td><td>0</td><td>Not Supported</td><td>0</td></tr></tbody></table>";
 
 function computeCellScore(weight, supportScore) {
   return weight * (MAX_SUPPORT_SCORE - supportScore);
@@ -436,8 +503,8 @@ function FeatMatrix({ features, options, requirements }) {
   const selectedReq = selectedReqId ? requirements?.find(r => r.id === selectedReqId) : null;
 
   return h("div", { className: "fm-container" },
-    requirements && requirements.length > 0 && h("div", { className: "fm-toolbar" },
-      h("div", { className: "fm-req-selector" },
+    h("div", { className: "fm-toolbar" },
+      requirements && requirements.length > 0 && h("div", { className: "fm-req-selector" },
         h("label", { className: "fm-req-label" }, "Requirements"),
         h("select", {
           className: "fm-req-select",
@@ -450,8 +517,21 @@ function FeatMatrix({ features, options, requirements }) {
           h("option", { value: "" }, "Custom")
         ),
         selectedReq?.description ? h("span", { className: "fm-req-desc" }, selectedReq.description) : null
+      ),
+      h("div", {
+        className: "fm-help",
+        "aria-label": "How it works",
+        role: "img",
+        tabIndex: 0,
+      },
+        "?",
+        h("div", {
+          className: "fm-tooltip fm-help-tooltip",
+          dangerouslySetInnerHTML: { __html: HELP_HTML },
+        })
       )
     ),
+    h("div", { className: "fm-table-wrap full-width-breakout" },
     h("table", { className: "fm-table" },
       h("thead", null,
         h("tr", null,
@@ -506,6 +586,7 @@ function FeatMatrix({ features, options, requirements }) {
           )
         )
       )
+    )
     ),
     h("div", { className: "fm-legend" },
       ...Object.entries(SUPPORT_INFO).map(([key, { label, emoji }]) =>
@@ -519,14 +600,5 @@ const data = {"features":[{"id":"llm_native","label":"Native LLM Support","descr
 const root = ReactDOM.createRoot(document.getElementById("feat-matrix-demo"));
 root.render(h(FeatMatrix, data));
 </script></div>
-<h2>How it works</h2>
-<ol>
-<li>Set the <strong>priority</strong> (MoSCoW) for each feature using the dropdown in the Priority column</li>
-<li>Tools are automatically <strong>scored and reordered</strong> — best match first</li>
-<li>Features are sorted by priority — Must-haves appear at the top</li>
-</ol>
-<h3>Scoring</h3>
-<p>Each feature contributes <code>moscow_weight × support_score</code> to a tool&#x27;s total:</p>
-<table><thead><tr><th>MoSCoW</th><th>Weight</th><th>Support Level</th><th>Score</th></tr></thead><tbody><tr><td>Must</td><td>8</td><td>Out of the Box</td><td>3</td></tr><tr><td>Should</td><td>4</td><td>Configuration</td><td>2</td></tr><tr><td>Could</td><td>2</td><td>Customization</td><td>1</td></tr><tr><td>Won&#x27;t</td><td>0</td><td>Not Supported</td><td>0</td></tr></tbody></table>
 </body>
 </html>

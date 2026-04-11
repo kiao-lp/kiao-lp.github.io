@@ -93,6 +93,24 @@
     /* Bold & emphasis */
     strong { font-weight: 600; color: #1f2328; }
 
+    /* Floating logo */
+    .site-logo {
+      position: fixed;
+      top: 1.5em;
+      right: 1.5em;
+      z-index: 100;
+    }
+    .site-logo img { height: 40px; width: auto; display: block; }
+
+    /* Full-width breakout for wide components */
+    .full-width-breakout {
+      width: 100vw;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 0 3em;
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
       body { padding: 1em; font-size: 14px; }
@@ -106,10 +124,13 @@
   </style>
 </head>
 <body>
+<a class="site-logo" href="https://www.kiao-lp.app/" title="Kiao">
+  <img src="https://www.kiao-lp.app/BrainK.jpg" alt="Kiao" />
+</a>
 <h1 id="cadre-projet">Cadre projet</h1>
 <div class="archdia-diagram">
 <?xml version="1.0" standalone="no"?>
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 854 788" width="854" height="788" class="archdia-svg">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 925 768" width="925" height="768" class="archdia-svg">
 <style>
 
 /* ─── ArchDia Export Styles ────────────────────────────────────────── */
@@ -176,6 +197,22 @@
     fill-opacity: 0.4;
     stroke: #c8ccd4;
     stroke-dasharray: none;
+}
+
+.archdia-container-trust .archdia-container-box {
+    fill: transparent;
+    fill-opacity: 0;
+    stroke: #ef4444;
+    stroke-width: 3;
+    stroke-dasharray: 10 5;
+}
+
+.archdia-container-trust .archdia-container-label {
+    fill: #ef4444;
+}
+
+.archdia-container-trust .archdia-container-stereotype {
+    fill: #ef4444;
 }
 
 .archdia-component-block .archdia-component-box {
@@ -280,8 +317,78 @@
     opacity: 0.7;
 }
 
+/* --- Markdown Tooltips --- */
+
+.archdia-tooltip {
+    pointer-events: none;
+}
+
+.archdia-tooltip-body {
+    width: max-content;
+    max-width: 300px;
+    max-height: 400px;
+    overflow: auto;
+    padding: 10px 14px;
+    background: #f9fafb;
+    border: 1px solid #c8ccd4;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #111827;
+    box-sizing: border-box;
+    white-space: normal;
+}
+
+.archdia-tooltip-body p {
+    margin: 0 0 8px 0;
+}
+.archdia-tooltip-body p:last-child {
+    margin-bottom: 0;
+}
+.archdia-tooltip-body h1, .archdia-tooltip-body h2,
+.archdia-tooltip-body h3, .archdia-tooltip-body h4,
+.archdia-tooltip-body h5, .archdia-tooltip-body h6 {
+    margin: 0 0 6px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+}
+.archdia-tooltip-body ul, .archdia-tooltip-body ol {
+    margin: 0 0 8px 0;
+    padding-left: 20px;
+}
+.archdia-tooltip-body li {
+    margin-bottom: 2px;
+}
+.archdia-tooltip-body code {
+    background: #e8eaf0;
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 12px;
+}
+.archdia-tooltip-body strong {
+    font-weight: 600;
+}
+.archdia-tooltip-body a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+/* --- Inline CSS-only Tooltips (for static SVG export) ---
+   Base rule hides them. Export CSS enables via :has() hover rules embedded in the SVG.
+   Browser CSS overrides with !important so the React overlay handles tooltips instead. */
+
+.archdia-inline-tooltip {
+    display: none;
+    pointer-events: none;
+}
+
+
 </style>
-<rect x="0" y="0" width="854" height="788" fill="#f9fafb" /><defs><marker id="archdia-arrowhead-arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="currentColor" class="archdia-arrowhead"></polygon></marker><marker id="archdia-arrowhead-triangle" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto"><polygon points="0 0, 10 5, 0 10" fill="none" stroke="currentColor" class="archdia-arrowhead"></polygon></marker><marker id="archdia-arrowhead-diamond" markerWidth="12" markerHeight="8" refX="12" refY="4" orient="auto"><polygon points="0 4, 6 0, 12 4, 6 8" fill="none" stroke="currentColor" class="archdia-arrowhead"></polygon></marker><marker id="archdia-arrowhead-diamond-filled" markerWidth="12" markerHeight="8" refX="12" refY="4" orient="auto"><polygon points="0 4, 6 0, 12 4, 6 8" fill="currentColor" class="archdia-arrowhead"></polygon></marker></defs><g class="archdia-container archdia-container-district"><rect x="102" y="18" width="304.1120000000001" height="324" rx="8" ry="8" class="archdia-container-box"></rect><text x="114" y="36" font-size="16" class="archdia-container-label" font-weight="bold">🏗️ Structuration &amp; Cycle de vie</text></g><g class="archdia-container archdia-container-district"><rect x="55" y="389" width="345.33600000000007" height="337" rx="8" ry="8" class="archdia-container-box"></rect><text x="67" y="407" font-size="16" class="archdia-container-label" font-weight="bold">🛡️ Gouvernance, Risques &amp; Contrôle</text></g><g class="archdia-container archdia-container-district"><rect x="484" y="166" width="344.9920000000002" height="400" rx="8" ry="8" class="archdia-container-box"></rect><text x="496" y="184" font-size="16" class="archdia-container-label" font-weight="bold">👥 Gestion des équipes &amp; Optimisation</text></g><g class="archdia-component archdia-component-block"><title>Offrir les outils permettant de définir et détailler la totalité des tâches, de l&#x27;architecture et des livrables requis avant même le début de la réalisation.</title><rect x="118" y="50" width="256.0960000000001" height="50" fill="transparent"></rect><rect x="118" y="50" width="256.0960000000001" height="50" rx="8" ry="8" class="archdia-component-box"></rect><text x="246.04800000000006" y="75" text-anchor="middle" dominant-baseline="central" font-size="16" class="archdia-component-label">Planification amont exhaustive</text></g><g class="archdia-component archdia-component-block"><title>Structurer le projet en étapes linéaires et interdépendantes séparées par des jalons de validation incontournables.</title><rect x="118" y="218" width="272.1120000000001" height="50" fill="transparent"></rect><rect x="118" y="218" width="272.1120000000001" height="50" rx="8" ry="8" class="archdia-component-box"></rect><text x="254.05600000000004" y="243" text-anchor="middle" dominant-baseline="central" font-size="16" class="archdia-component-label">Séquencement strict des phases</text></g><g class="archdia-component archdia-component-block"><title>Permettre le déploiement du produit par lots fonctionnels successifs et utilisables plutôt qu&#x27;en une seule livraison finale monolithique.</title><rect x="120" y="160" width="200.048" height="50" fill="transparent"></rect><rect x="120" y="160" width="200.048" height="50" rx="8" ry="8" class="archdia-component-box"></rect><text x="220.024" y="185" text-anchor="middle" dominant-baseline="central" font-size="16" class="archdia-component-label">Livraison incrémentale</text></g><g class="archdia-component archdia-component-block"><title>Accueillir et intégrer nativement les changements de besoins ou de priorités en cours de développement sans déstabiliser la chaîne de production.</title><rect x="118" y="276" width="200.92800000000005" height="50" fill="transparent"></rect><rect x="118" y="276" width="200.92800000000005" height="50" rx="8" ry="8" class="archdia-component-box"></rect><text x="218.46400000000003" y="301" text-anchor="middle" dominant-baseline="central" font-size="16" class="archdia-component-label">Flexibilité du périmètre</text></g><g class="archdia-component archdia-component-block"><title>Protéger l&#x27;équipe de réalisation des changements intempestifs et des dérives en figeant contractuellement ou méthodologiquement les spécifications de départ.</title><rect x="119" y="106" width="260.51200000000006" height="50" fill="transparent"></rect><rect x="119" y="106" width="260.51200000000006" height="50" rx="8" ry="8" class="archdia-component-box"></rect><text x="249.25600000000003" y="131" text-anchor="middle" dominant-baseline="central" font-size="16" class="archdia-component-label">Verrouillage du périmètre initial</text></g><g class="archdia-component archdia-component-block"><title>Cadrer les prises de décision à l&#x27;aide de comités de pilotage, de rôles de management verticaux et d&#x27;une chaîne de validation clairement définie.</title><rect x="74" y="421" width="310.33600000000007" height="50" fill="transparent"></rect><rect x="74" y="421" width="310.33600000000007" height="50" rx="8" ry="8" class="archdia-component-box"></rect><text x="229.16800000000003" y="446" text-anchor="middle" dominant-baseline="central" font-size="16" class="archdia-component-label">Gouvernance hiérarchique centralisée</text></g><g class="archdia-component archdia-component-block"><title>Fournir des protocoles et des matrices dédiés spécifiquement à l&#x27;identification, la quantification et la mitigation des menaces avant que les problèmes ne surviennent.</title><rect x="72" y="599" width="287.20000000000005" height="50" fill="transparent"></rect><rect x="72" y="599" width="287.20000000000005" height="50" rx="8" ry="8" class="archdia-component-box"></rect><text x="215.60000000000002" y="624" text-anchor="middle" dominant-baseline="central" font-size="16" class="archdia-component-label">Anticipation formalisée des risques</text></g><g class="archdia-component archdia-component-block"><title>Assurer le respect absolu de l&#x27;enveloppe budgétaire et du calendrier tels qu&#x27;ils ont été calculés lors de la phase d&#x27;initialisation.</title><rect x="72" y="539" width="244.52800000000002" height="50" fill="transparent"></rect><rect x="72" y="539" width="244.52800000000002" height="50" rx="8" ry="8" class="archdia-component-box"></rect><text x="194.264" y="564" text-anchor="middle" dominant-baseline="central" font-size="16" class="archdia-component-label">Prédictibilité globale garantie</text></g><g class="archdia-component archdia-component-block"><title>Générer et imposer le maintien d&#x27;une documentation exhaustive justifiant chaque choix technique, assurant ainsi la pérennité de l&#x27;information et la conformité réglementaire.</title><rect x="71" y="660" width="312.09600000000006" height="50" fill="transparent"></rect><rect x="71" y="660" width="312.09600000000006" height="50" rx="8" ry="8" class="archdia-component-box"></rect><text x="227.04800000000003" y="685" text-anchor="middle" dominant-baseline="central" font-size="16" class="archdia-component-label">Traçabilité et conformité documentaire</text></g><g class="archdia-component archdia-component-block"><title>Minimiser délibérément le poids des règles, des réunions et de l&#x27;administration pour maximiser le temps alloué à la production brute et la liberté créative.</title><rect x="74" y="480" width="192.07999999999998" height="50" fill="transparent"></rect><rect x="74" y="480" width="192.07999999999998" height="50" rx="8" ry="8" class="archdia-component-box"></rect><text x="170.04" y="505" text-anchor="middle" dominant-baseline="central" font-size="16" class="archdia-component-label">Légèreté procédurale</text></g><g class="archdia-component archdia-component-block"><title>Optimiser l&#x27;efficacité en cloisonnant l&#x27;intervention d&#x27;experts pointus à des moments spécifiques et exclusifs du cycle de vie du projet.</title><rect x="500" y="198" width="302.33600000000007" height="50" fill="transparent"></rect><rect x="500" y="198" width="302.33600000000007" height="50" rx="8" ry="8" class="archdia-component-box"></rect><text x="651.168" y="223" text-anchor="middle" dominant-baseline="central" font-size="16" class="archdia-component-label">Spécialisation fonctionnelle des rôles</text></g><g class="archdia-component archdia-component-block"><title>Déléguer la planification quotidienne, l&#x27;assignation des tâches et les choix de résolution directement aux contributeurs qui réalisent le produit.</title><rect x="502" y="257" width="221.4240000000001" height="50" fill="transparent"></rect><rect x="502" y="257" width="221.4240000000001" height="50" rx="8" ry="8" class="archdia-component-box"></rect><text x="612.712" y="282" text-anchor="middle" dominant-baseline="central" font-size="16" class="archdia-component-label">Autonomie opérationnelle</text></g><g class="archdia-component archdia-component-block"><title>Imbriquer structurellement le client ou les utilisateurs finaux dans la création quotidienne à travers des boucles de validation et d&#x27;ajustement très fréquentes.</title><rect x="500" y="316" width="312.99200000000013" height="50" fill="transparent"></rect><rect x="500" y="316" width="312.99200000000013" height="50" rx="8" ry="8" class="archdia-component-box"></rect><text x="656.4960000000001" y="341" text-anchor="middle" dominant-baseline="central" font-size="16" class="archdia-component-label">Implication continue du commanditaire</text></g><g class="archdia-component archdia-component-block"><title>Fournir des mécanismes visuels ou analytiques pour identifier, mesurer et éliminer en continu les gaspillages comme les temps d&#x27;attente ou la surproduction.</title><rect x="503" y="376" width="258.75200000000007" height="50" fill="transparent"></rect><rect x="503" y="376" width="258.75200000000007" height="50" rx="8" ry="8" class="archdia-component-box"></rect><text x="632.376" y="401" text-anchor="middle" dominant-baseline="central" font-size="16" class="archdia-component-label">Optimisation des flux de valeur</text></g><g class="archdia-component archdia-component-block"><title>Intégrer des rituels méthodologiques obligatoires dédiés à l&#x27;analyse des pratiques de l&#x27;équipe afin de faire évoluer et d&#x27;affiner la méthode elle-même en cours de projet.</title><rect x="503" y="439" width="298.24000000000007" height="50" fill="transparent"></rect><rect x="503" y="439" width="298.24000000000007" height="50" rx="8" ry="8" class="archdia-component-box"></rect><text x="652.12" y="464" text-anchor="middle" dominant-baseline="central" font-size="16" class="archdia-component-label">Mécanismes d&#x27;amélioration continue</text></g><g class="archdia-component archdia-component-block"><title>Fournir des cadres permettant de maintenir la synchronisation, de gérer les dépendances et d&#x27;aligner la vision lorsque le travail nécessite la coordination de multiples équipes.</title><rect x="503" y="500" width="238.3040000000001" height="50" fill="transparent"></rect><rect x="503" y="500" width="238.3040000000001" height="50" rx="8" ry="8" class="archdia-component-box"></rect><text x="622.152" y="525" text-anchor="middle" dominant-baseline="central" font-size="16" class="archdia-component-label">Scalabilité organisationnelle</text></g></svg>
+<rect x="0" y="0" width="925" height="768" fill="#f9fafb" /><defs><marker id="archdia-arrowhead-arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="currentColor" class="archdia-arrowhead"></polygon></marker><marker id="archdia-arrowhead-triangle" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto"><polygon points="0 0, 10 5, 0 10" fill="none" stroke="currentColor" class="archdia-arrowhead"></polygon></marker><marker id="archdia-arrowhead-diamond" markerWidth="12" markerHeight="8" refX="12" refY="4" orient="auto"><polygon points="0 4, 6 0, 12 4, 6 8" fill="none" stroke="currentColor" class="archdia-arrowhead"></polygon></marker><marker id="archdia-arrowhead-diamond-filled" markerWidth="12" markerHeight="8" refX="12" refY="4" orient="auto"><polygon points="0 4, 6 0, 12 4, 6 8" fill="currentColor" class="archdia-arrowhead"></polygon></marker></defs></svg>
 </div>
 </body>
 </html>
