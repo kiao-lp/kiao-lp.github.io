@@ -157,14 +157,13 @@
 <p><em>[temps d’attente]</em></p>
 <p>Dans tous les cas, l’exercice suivant sera alors lancé.</p>
 <p>En réalité, il existe plusieurs exercices sur le même principe : vocabulaire dans plusieurs langues, apprentissage de phrases importantes, exercices écrits (de mathématiques, par exemple). Les exercices sont toujours définis dans le texte des notes.</p>
-<p>Chaque <a href="https://github.com/ezwn/kiao-pub/blob/main/infra/maven/kiao-knowledge-assessment-lib/src/main/java/kiao/knowledge/assessment/ExerciseType.java">type d’exercices</a> a ses propres paramètres de planification (période réfractaire minimale, exposant d’apprentissage, exposant d’oubli, etc.) qui influencent le <a href="https://github.com/ezwn/kiao-pub/blob/563012c70474bf51d323922e802d69e100cee968/infra/maven/kiao-knowledge-assessment-lib/src/main/java/kiao/knowledge/assessment/AttemptLog.java#L46">calcul de la durée de consolidation</a> pendant laquel l’exercice est supposé stable en mémoire.</p>
+<p>Chaque type d’exercices a ses propres paramètres de planification (période réfractaire minimale, exposant d’apprentissage, exposant d’oubli, etc.) qui influencent le calcul de la durée de consolidation pendant laquel l’exercice est supposé stable en mémoire.</p>
 <p>Note : le contenu textuel des notes/unités, sur lequel est fondé les exercices n’est analysé que :</p>
 <ol type="1">
 <li>dans le cadre du champ de saisi (pure frontend)</li>
 <li>dans l’application déployée sur téléphone mobile</li>
 </ol>
-<p>Cela ne fait donc pas partie de ce projet. Toutefois le code source de l’analyseur est disponible ici :</p>
-<p>https://github.com/ezwn/kiao-pub/tree/main/infra/maven/kiao-mlscript-lib</p>
+<p>Cela ne fait donc pas partie de ce projet.</p>
 <h2 id="acteurs">Acteurs</h2>
 <ul>
 <li>visiteur : acteur non authentifié</li>
