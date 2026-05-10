@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Note processing</title>
+  <style>
+    /* Reset & base */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { font-size: 16px; line-height: 1.6; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      color: #1f2328;
+      background: #fff;
+      margin: 0;
+      padding: 2em;
+      max-width: 980px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Headings */
+    h1, h2, h3, h4, h5, h6 { margin-top: 1.5em; margin-bottom: 0.5em; font-weight: 600; color: #1f2328; }
+    h1 { font-size: 2em; padding-bottom: 0.3em; border-bottom: 1px solid #d1d9e0; }
+    h2 { font-size: 1.5em; padding-bottom: 0.3em; border-bottom: 1px solid #d1d9e0; }
+    h3 { font-size: 1.25em; }
+    h4 { font-size: 1em; }
+
+    /* Links */
+    a { color: #0969da; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Paragraphs & lists */
+    p { margin: 0 0 16px; }
+    ul, ol { padding-left: 2em; margin-bottom: 16px; }
+    li { margin-bottom: 4px; }
+
+    /* Code */
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.85em;
+      background: #f6f8fa;
+      border-radius: 6px;
+      padding: 0.2em 0.4em;
+    }
+    pre {
+      background: #f6f8fa;
+      border-radius: 6px;
+      padding: 16px;
+      overflow: auto;
+      line-height: 1.45;
+      margin-bottom: 16px;
+    }
+    pre code { background: none; padding: 0; font-size: 0.85em; }
+
+    /* Blockquotes */
+    blockquote {
+      margin: 0 0 16px;
+      padding: 0 1em;
+      color: #656d76;
+      border-left: 4px solid #d1d9e0;
+    }
+
+    /* Tables */
+    table { border-collapse: collapse; width: 100%; margin-bottom: 16px; }
+    th, td { border: 1px solid #d1d9e0; padding: 6px 13px; text-align: left; }
+    th { background: #f6f8fa; font-weight: 600; }
+    tr:nth-child(even) { background: #f6f8fa; }
+
+    /* Horizontal rules */
+    hr { border: none; border-top: 1px solid #d1d9e0; margin: 24px 0; }
+
+    /* Images & SVG */
+    img, svg { max-width: 100%; height: auto; }
+
+    /* Diagram containers */
+    .plantuml, .mermaid-diagram { text-align: center; margin: 16px 0; }
+
+    /* Callout components */
+    .callout {
+      border-radius: 6px;
+      border-left: 4px solid;
+      padding: 12px 16px;
+      margin: 16px 0;
+    }
+    .callout-title { font-weight: 600; margin-bottom: 4px; }
+    .callout-body > p:last-child { margin-bottom: 0; }
+    .callout-note    { border-color: #0969da; background: #ddf4ff; }
+    .callout-tip     { border-color: #1a7f37; background: #dafbe1; }
+    .callout-warning { border-color: #bf8700; background: #fff8c5; }
+    .callout-danger  { border-color: #cf222e; background: #ffebe9; }
+
+    /* Bold & emphasis */
+    strong { font-weight: 600; color: #1f2328; }
+
+    /* Floating logo */
+    .site-logo {
+      position: fixed;
+      top: 1.5em;
+      right: 1.5em;
+      z-index: 100;
+    }
+    .site-logo img { height: 40px; width: auto; display: block; }
+
+    /* Full-width breakout for wide components */
+    .full-width-breakout {
+      width: 100vw;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 0 3em;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body { padding: 1em; font-size: 14px; }
+    }
+
+    @media print {
+      body { max-width: none; padding: 0; }
+      h1, h2, h3, h4, h5, h6 { page-break-after: avoid; }
+      pre { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<a class="site-logo" href="https://www.kiao-lp.app/" title="Kiao">
+  <img src="https://www.kiao-lp.app/BrainK.jpg" alt="Kiao" />
+</a>
+<h1 id="note-processing">Note processing</h1>
+<h2 id="publishing-within-the-catalog">Publishing within the catalog</h2>
+<p>The catalog service receives a <code>PublishNoteCommand</code> from QuickCMS and transforms the note into a unit, then persists it to the database.</p>
+<div class="code-block-wrapper"><div class="markdown-converter-raw"><div class="plantuml"><?plantuml 1.2026.2?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="SEQUENCE" height="256px" preserveAspectRatio="none" style="width:390px;height:256px;background:#FFFFFF;" version="1.1" viewBox="0 0 390 256" width="390px" zoomAndPan="magnify"><defs><filter height="300%" id="f1peom92lmyh5w" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4" dy="4" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><g class="participant-lifeline" data-entity-uid="part1" data-qualified-name="QuickCMS" id="part1-lifeline"><g><title>..Web App..</title><rect fill="#000000" fill-opacity="0.00000" height="78.2656" width="8" x="44.1372" y="83.5938"/><line style="stroke:#A80036;stroke-width:1;stroke-dasharray:5,5;" x1="48" x2="48" y1="83.5938" y2="161.8594"/></g></g><g class="participant-lifeline" data-entity-uid="part2" data-qualified-name="CatalogService" id="part2-lifeline"><g><title>..Spring Boot..</title><rect fill="#000000" fill-opacity="0.00000" height="78.2656" width="8" x="216.082" y="83.5938"/><line style="stroke:#A80036;stroke-width:1;stroke-dasharray:5,5;" x1="219.3291" x2="219.3291" y1="83.5938" y2="161.8594"/></g></g><g class="participant-lifeline" data-entity-uid="part3" data-qualified-name="CatalogDB" id="part3-lifeline"><g><title>..PostgreSQL..</title><rect fill="#000000" fill-opacity="0.00000" height="78.2656" width="8" x="333.7769" y="83.5938"/><line style="stroke:#A80036;stroke-width:1;stroke-dasharray:5,5;" x1="336.835" x2="336.835" y1="83.5938" y2="161.8594"/></g></g><g class="participant participant-head" data-entity-uid="part1" data-qualified-name="QuickCMS" id="part1-head"><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="80.2744" x="5" y="63.9951">&#171;Web App&#187;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="70.3281" x="9.9731" y="80.292">QuickCMS</text><path d="M27.6372,23 L27.6372,47 M27.6372,35 L44.6372,35" fill="none" filter="url(#f1peom92lmyh5w)" style="stroke:#A80036;stroke-width:2;"/><ellipse cx="56.6372" cy="35" fill="#FEFECE" filter="url(#f1peom92lmyh5w)" rx="12" ry="12" style="stroke:#A80036;stroke-width:2;"/></g><g class="participant participant-tail" data-entity-uid="part1" data-qualified-name="QuickCMS" id="part1-tail"><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="80.2744" x="5" y="173.8545">&#171;Web App&#187;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="70.3281" x="9.9731" y="190.1514">QuickCMS</text><path d="M27.6372,197.4531 L27.6372,221.4531 M27.6372,209.4531 L44.6372,209.4531" fill="none" filter="url(#f1peom92lmyh5w)" style="stroke:#A80036;stroke-width:2;"/><ellipse cx="56.6372" cy="209.4531" fill="#FEFECE" filter="url(#f1peom92lmyh5w)" rx="12" ry="12" style="stroke:#A80036;stroke-width:2;"/></g><g class="participant participant-head" data-entity-uid="part2" data-qualified-name="CatalogService" id="part2-head"><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="98.9844" x="167.5898" y="63.9951">&#171;Spring Boot&#187;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="105.5059" x="164.3291" y="80.292">CatalogService</text><path d="M199.582,23 L199.582,47 M199.582,35 L216.582,35" fill="none" filter="url(#f1peom92lmyh5w)" style="stroke:#A80036;stroke-width:2;"/><ellipse cx="228.582" cy="35" fill="#FEFECE" filter="url(#f1peom92lmyh5w)" rx="12" ry="12" style="stroke:#A80036;stroke-width:2;"/></g><g class="participant participant-tail" data-entity-uid="part2" data-qualified-name="CatalogService" id="part2-tail"><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="98.9844" x="167.5898" y="173.8545">&#171;Spring Boot&#187;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="105.5059" x="164.3291" y="190.1514">CatalogService</text><path d="M199.582,197.4531 L199.582,221.4531 M199.582,209.4531 L216.582,209.4531" fill="none" filter="url(#f1peom92lmyh5w)" style="stroke:#A80036;stroke-width:2;"/><ellipse cx="228.582" cy="209.4531" fill="#FEFECE" filter="url(#f1peom92lmyh5w)" rx="12" ry="12" style="stroke:#A80036;stroke-width:2;"/></g><g class="participant participant-head" data-entity-uid="part3" data-qualified-name="CatalogDB" id="part3-head"><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="97.8838" x="285.835" y="63.9951">&#171;PostgreSQL&#187;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="74.1494" x="297.7021" y="80.292">CatalogDB</text><path d="M319.7769,15 C319.7769,5 337.7769,5 337.7769,5 C337.7769,5 355.7769,5 355.7769,15 L355.7769,41 C355.7769,51 337.7769,51 337.7769,51 C337.7769,51 319.7769,51 319.7769,41 L319.7769,15" fill="#FEFECE" filter="url(#f1peom92lmyh5w)" style="stroke:#A80036;stroke-width:1;"/><path d="M319.7769,15 C319.7769,25 337.7769,25 337.7769,25 C337.7769,25 355.7769,25 355.7769,15" fill="none" style="stroke:#A80036;stroke-width:1;"/></g><g class="participant participant-tail" data-entity-uid="part3" data-qualified-name="CatalogDB" id="part3-tail"><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="97.8838" x="285.835" y="173.8545">&#171;PostgreSQL&#187;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="74.1494" x="297.7021" y="190.1514">CatalogDB</text><path d="M319.7769,203.4531 C319.7769,193.4531 337.7769,193.4531 337.7769,193.4531 C337.7769,193.4531 355.7769,193.4531 355.7769,203.4531 L355.7769,229.4531 C355.7769,239.4531 337.7769,239.4531 337.7769,239.4531 C337.7769,239.4531 319.7769,239.4531 319.7769,229.4531 L319.7769,203.4531" fill="#FEFECE" filter="url(#f1peom92lmyh5w)" style="stroke:#A80036;stroke-width:1;"/><path d="M319.7769,203.4531 C319.7769,213.4531 337.7769,213.4531 337.7769,213.4531 C337.7769,213.4531 355.7769,213.4531 355.7769,203.4531" fill="none" style="stroke:#A80036;stroke-width:1;"/></g><g class="message" data-entity-1="part1" data-entity-2="part2" id="msg1"><polygon fill="#A80036" points="208.082,110.7266,218.082,114.7266,208.082,118.7266,212.082,114.7266" style="stroke:#A80036;stroke-width:1;"/><line style="stroke:#A80036;stroke-width:1;" x1="48.1372" x2="214.082" y1="114.7266" y2="114.7266"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="147.9448" x="55.1372" y="109.6606">POST /api/publish-note</text></g><g class="message" data-entity-1="part2" data-entity-2="part3" id="msg2"><polygon fill="#A80036" points="325.7769,139.8594,335.7769,143.8594,325.7769,147.8594,329.7769,143.8594" style="stroke:#A80036;stroke-width:1;"/><line style="stroke:#A80036;stroke-width:1;" x1="220.082" x2="331.7769" y1="143.8594" y2="143.8594"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="59.7505" x="227.082" y="138.7935">save unit</text></g><?plantuml-src NSn12eCm48NXVKun5n3t8aArovOgANITw90EIYPa4g6tRpQjuFfzxvULF4GMLCfozek97vWopUjmrz2sBxHm2Q7hZdKmoMpiDCQTPYn6XqZUGS-SYblAR8tWprtxGaQMv2BgwLQ4-lUhxbnhO7pe9zGcK1sotKZUbUU4wkIEP-at86P7o9xI5m00?></g></svg></div></div></div>
+<h2 id="building-training-units">Building training units</h2>
+<p>In local/experimental environments, QuickCMS publishes directly to <code>go-unit-builder</code>, which handles TTS audio generation and persists the resulting unit to the local filesystem (no catalog involved).</p>
+<div class="code-block-wrapper"><div class="markdown-converter-raw"><div class="plantuml"><?plantuml 1.2026.2?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="SEQUENCE" height="343px" preserveAspectRatio="none" style="width:578px;height:343px;background:#FFFFFF;" version="1.1" viewBox="0 0 578 343" width="578px" zoomAndPan="magnify"><defs><filter height="300%" id="fk489a12ld1xf" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4" dy="4" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><g class="participant-lifeline" data-entity-uid="part1" data-qualified-name="QuickCMS" id="part1-lifeline"><g><title>..Web App..</title><rect fill="#000000" fill-opacity="0.00000" height="165.6641" width="8" x="44.1372" y="83.5938"/><line style="stroke:#A80036;stroke-width:1;stroke-dasharray:5,5;" x1="48" x2="48" y1="83.5938" y2="249.2578"/></g></g><g class="participant-lifeline" data-entity-uid="part2" data-qualified-name="GoUnitBuilder" id="part2-lifeline"><g><title>..Spring Boot..</title><rect fill="#000000" fill-opacity="0.00000" height="165.6641" width="8" x="216.082" y="83.5938"/><line style="stroke:#A80036;stroke-width:1;stroke-dasharray:5,5;" x1="219.5898" x2="219.5898" y1="83.5938" y2="249.2578"/></g></g><g class="participant-lifeline" data-entity-uid="part3" data-qualified-name="GoogleTTS" id="part3-lifeline"><g><title>..Google Cloud..</title><rect fill="#000000" fill-opacity="0.00000" height="165.6641" width="8" x="359.8687" y="83.5938"/><line style="stroke:#A80036;stroke-width:1;stroke-dasharray:5,5;" x1="363.3984" x2="363.3984" y1="83.5938" y2="249.2578"/></g></g><g class="participant-lifeline" data-entity-uid="part4" data-qualified-name="LocalFilesystem" id="part4-lifeline"><g><title>..Filesystem . Git..</title><rect fill="#000000" fill-opacity="0.00000" height="165.6641" width="8" x="503.8628" y="83.5938"/><line style="stroke:#A80036;stroke-width:1;stroke-dasharray:5,5;" x1="507.3389" x2="507.3389" y1="83.5938" y2="249.2578"/></g></g><g class="participant participant-head" data-entity-uid="part1" data-qualified-name="QuickCMS" id="part1-head"><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="80.2744" x="5" y="63.9951">&#171;Web App&#187;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="70.3281" x="9.9731" y="80.292">QuickCMS</text><path d="M27.6372,23 L27.6372,47 M27.6372,35 L44.6372,35" fill="none" filter="url(#fk489a12ld1xf)" style="stroke:#A80036;stroke-width:2;"/><ellipse cx="56.6372" cy="35" fill="#FEFECE" filter="url(#fk489a12ld1xf)" rx="12" ry="12" style="stroke:#A80036;stroke-width:2;"/></g><g class="participant participant-tail" data-entity-uid="part1" data-qualified-name="QuickCMS" id="part1-tail"><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="80.2744" x="5" y="261.2529">&#171;Web App&#187;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="70.3281" x="9.9731" y="277.5498">QuickCMS</text><path d="M27.6372,284.8516 L27.6372,308.8516 M27.6372,296.8516 L44.6372,296.8516" fill="none" filter="url(#fk489a12ld1xf)" style="stroke:#A80036;stroke-width:2;"/><ellipse cx="56.6372" cy="296.8516" fill="#FEFECE" filter="url(#fk489a12ld1xf)" rx="12" ry="12" style="stroke:#A80036;stroke-width:2;"/></g><g class="participant participant-head" data-entity-uid="part2" data-qualified-name="GoUnitBuilder" id="part2-head"><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="98.9844" x="167.5898" y="63.9951">&#171;Spring Boot&#187;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="97.4258" x="168.3691" y="80.292">GoUnitBuilder</text><path d="M199.582,23 L199.582,47 M199.582,35 L216.582,35" fill="none" filter="url(#fk489a12ld1xf)" style="stroke:#A80036;stroke-width:2;"/><ellipse cx="228.582" cy="35" fill="#FEFECE" filter="url(#fk489a12ld1xf)" rx="12" ry="12" style="stroke:#A80036;stroke-width:2;"/></g><g class="participant participant-tail" data-entity-uid="part2" data-qualified-name="GoUnitBuilder" id="part2-tail"><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="98.9844" x="167.5898" y="261.2529">&#171;Spring Boot&#187;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="97.4258" x="168.3691" y="277.5498">GoUnitBuilder</text><path d="M199.582,284.8516 L199.582,308.8516 M199.582,296.8516 L216.582,296.8516" fill="none" filter="url(#fk489a12ld1xf)" style="stroke:#A80036;stroke-width:2;"/><ellipse cx="228.582" cy="296.8516" fill="#FEFECE" filter="url(#fk489a12ld1xf)" rx="12" ry="12" style="stroke:#A80036;stroke-width:2;"/></g><g class="participant participant-head" data-entity-uid="part3" data-qualified-name="GoogleTTS" id="part3-head"><rect fill="#FEFECE" filter="url(#fk489a12ld1xf)" height="46.5938" style="stroke:#A80036;stroke-width:1.5;" width="124.9404" x="299.3984" y="32"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="110.9404" x="306.3984" y="51.9951">&#171;Google Cloud&#187;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="75.3594" x="324.189" y="68.292">GoogleTTS</text></g><g class="participant participant-tail" data-entity-uid="part3" data-qualified-name="GoogleTTS" id="part3-tail"><rect fill="#FEFECE" filter="url(#fk489a12ld1xf)" height="46.5938" style="stroke:#A80036;stroke-width:1.5;" width="124.9404" x="299.3984" y="248.2578"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="110.9404" x="306.3984" y="268.2529">&#171;Google Cloud&#187;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="75.3594" x="324.189" y="284.5498">GoogleTTS</text></g><g class="participant participant-head" data-entity-uid="part4" data-qualified-name="LocalFilesystem" id="part4-head"><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="133.0479" x="438.3389" y="63.9951">&#171;Filesystem + Git&#187;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="111.5898" x="449.0679" y="80.292">LocalFilesystem</text><path d="M489.8628,15 C489.8628,5 507.8628,5 507.8628,5 C507.8628,5 525.8628,5 525.8628,15 L525.8628,41 C525.8628,51 507.8628,51 507.8628,51 C507.8628,51 489.8628,51 489.8628,41 L489.8628,15" fill="#FEFECE" filter="url(#fk489a12ld1xf)" style="stroke:#A80036;stroke-width:1;"/><path d="M489.8628,15 C489.8628,25 507.8628,25 507.8628,25 C507.8628,25 525.8628,25 525.8628,15" fill="none" style="stroke:#A80036;stroke-width:1;"/></g><g class="participant participant-tail" data-entity-uid="part4" data-qualified-name="LocalFilesystem" id="part4-tail"><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="133.0479" x="438.3389" y="261.2529">&#171;Filesystem + Git&#187;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="111.5898" x="449.0679" y="277.5498">LocalFilesystem</text><path d="M489.8628,290.8516 C489.8628,280.8516 507.8628,280.8516 507.8628,280.8516 C507.8628,280.8516 525.8628,280.8516 525.8628,290.8516 L525.8628,316.8516 C525.8628,326.8516 507.8628,326.8516 507.8628,326.8516 C507.8628,326.8516 489.8628,326.8516 489.8628,316.8516 L489.8628,290.8516" fill="#FEFECE" filter="url(#fk489a12ld1xf)" style="stroke:#A80036;stroke-width:1;"/><path d="M489.8628,290.8516 C489.8628,300.8516 507.8628,300.8516 507.8628,300.8516 C507.8628,300.8516 525.8628,300.8516 525.8628,290.8516" fill="none" style="stroke:#A80036;stroke-width:1;"/></g><g class="message" data-entity-1="part1" data-entity-2="part2" id="msg1"><polygon fill="#A80036" points="208.082,110.7266,218.082,114.7266,208.082,118.7266,212.082,114.7266" style="stroke:#A80036;stroke-width:1;"/><line style="stroke:#A80036;stroke-width:1;" x1="48.1372" x2="214.082" y1="114.7266" y2="114.7266"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="147.9448" x="55.1372" y="109.6606">POST /api/publish-note</text></g><g class="message" data-entity-1="part2" data-entity-2="part3" id="msg2"><polygon fill="#A80036" points="351.8687,139.8594,361.8687,143.8594,351.8687,147.8594,355.8687,143.8594" style="stroke:#A80036;stroke-width:1;"/><line style="stroke:#A80036;stroke-width:1;" x1="220.082" x2="357.8687" y1="143.8594" y2="143.8594"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="119.7866" x="227.082" y="138.7935">synthesize speech</text></g><g class="message" data-entity-1="part3" data-entity-2="part2" id="msg3"><polygon fill="#A80036" points="231.082,168.9922,221.082,172.9922,231.082,176.9922,227.082,172.9922" style="stroke:#A80036;stroke-width:1;"/><line style="stroke:#A80036;stroke-width:1;stroke-dasharray:2,2;" x1="225.082" x2="362.8687" y1="172.9922" y2="172.9922"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="66.7266" x="237.082" y="167.9263">audio files</text></g><g class="message" data-entity-1="part2" data-entity-2="part4" id="msg4"><polygon fill="#A80036" points="495.8628,198.125,505.8628,202.125,495.8628,206.125,499.8628,202.125" style="stroke:#A80036;stroke-width:1;"/><line style="stroke:#A80036;stroke-width:1;" x1="220.082" x2="501.8628" y1="202.125" y2="202.125"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="149.1826" x="227.082" y="197.0591">save unit JSON + MP3s</text></g><g class="message" data-entity-1="part2" data-entity-2="part4" id="msg5"><polygon fill="#A80036" points="495.8628,227.2578,505.8628,231.2578,495.8628,235.2578,499.8628,231.2578" style="stroke:#A80036;stroke-width:1;"/><line style="stroke:#A80036;stroke-width:1;" x1="220.082" x2="501.8628" y1="231.2578" y2="231.2578"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="70.2305" x="227.082" y="226.1919">git commit</text></g><?plantuml-src ZOzFIyD04CNl-odcBg47RwK4RC62jBQIYEV9xfWCtUmi-qU8dzwDejNgmTiCytjlteidTX0aabATP6SmJF2GMPys-mPMgoVguCRxkZvVj_BeEAqpMqEX88qFx7fOYwI2UGo9DNjqgP3IMshRsUXZXesLR0fcC667aM0d6kqjMufJJ3GMyjjo1LkUJTLNegg--B-4uw5fOO6U5pvtbkDGEKcaVcBlkiyqIuYJImD5VYM8daWFwdoj_lY1sR30yvpij_5bXMAFBmIvK73N7EvBZVtn-b_2laYqZ2EdDm00?></g></svg></div></div></div>
+</body>
+</html>
